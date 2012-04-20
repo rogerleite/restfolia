@@ -1,0 +1,13 @@
+EntryPoint
+* post!, put! and delete!
+* maybe remove bang from get, post, put and delete methods
+* allow cookies in request
+* allow headers in request
+
+Resource & EntryPoint
+* facilitate cache (Cache Control, ETag, Last-Modified)
+
+HTTP Behaviours
+* follow redirects
+* improve 404 and 500 errors
+* create librarian-wrappers project
