@@ -82,9 +82,22 @@ describe Restfolia::HTTPBehaviour do
 
   describe "#on_4xx" do
 
-    it "raise Error for 4xx status" do
+    it "raise Error for 401 status" do
+      stub_get_request(:status => 401, :body => "")
+      request = lambda { subject.get }
+      error = request.call rescue $!
+
+      request.must_raise(Restfolia::ResponseError)
+      error.message.must_equal 'Unauthorized'
+    end
+
+    it "raise Error for 404 status" do
       stub_get_request(:status => 404, :body => "")
-      lambda { subject.get }.must_raise(Restfolia::ResponseError)
+      request = lambda { subject.get }
+      error = request.call rescue $!
+
+      request.must_raise(Restfolia::ResponseError)
+      error.message.must_equal 'Not Found'
     end
 
   end
