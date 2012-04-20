@@ -100,7 +100,7 @@ module Restfolia
     # Raises Restfolia::ResponseError if body seens invalid somehow.
     def parse_body(body)
       begin
-        MultiJson.decode(body, :symbolize_keys => true)
+        MultiJson.load(body, :symbolize_keys => true)
       rescue MultiJson::DecodeError => ex
         msg = "Body should be a valid json. #{ex.message}"
         raise ResponseError, msg, caller
