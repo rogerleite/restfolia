@@ -46,6 +46,14 @@ describe Restfolia::HTTPBehaviour do
       value.must_be_instance_of(Restfolia::Resource)
     end
 
+    it "should return Resource for HTTP Response when content-type is 'application/json; charset=utf-8'" do
+      @http_mock.expect(:[], "application/json; charset=utf-8", ["content-type"])
+      @http_mock.expect(:body, '{"attr_test": "test"}')
+
+      value = Restfolia::HTTPBehaviour.on_2xx(@http_mock)
+      value.must_be_instance_of(Restfolia::Resource)
+    end
+
     it "should return Resource for HTTP Response with Location header" do
       @http_mock.expect(:code, "201")
       @http_mock.expect(:body, nil)

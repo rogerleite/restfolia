@@ -40,7 +40,7 @@ module Restfolia
     # "aplication/json".
     def on_2xx(http_response)
 
-      content_type = (http_response["content-type"] == "application/json")
+      content_type = (http_response["content-type"] =~ /application\/json/)
       if !content_type
         msg_error = "Response \"content-type\" header should be \"application/json\""
         raise(ResponseError, msg_error, caller)
