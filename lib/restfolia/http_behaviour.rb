@@ -77,7 +77,26 @@ module Restfolia
     # Returns nothing.
     # Raises Restfolia::ResponseError Resource not found.
     def on_4xx(http_response)
-      raise(ResponseError, "Resource not found.", caller)
+      series_4xx = { 400 => 'Bad Request',
+                     401 => 'Unauthorized',
+                     402 => 'Payment Required',
+                     403 => 'Forbidden',
+                     404 => 'Not Found',
+                     405 => 'Method Not Allowed',
+                     406 => 'Not Acceptable',
+                     407 => 'Proxy Authentication Required',
+                     408 => 'Request Timeout',
+                     409 => 'Conflict',
+                     410 => 'Gone',
+                     411 => 'Length Required',
+                     412 => 'Precondition Failed',
+                     413 => 'Request Entity Too Large',
+                     414 => 'Request-URI Too Long',
+                     415 => 'Unsupported Media Type',
+                     416 => 'Requested Range Not Satisfiable',
+                     417 => 'Expectation Failed'}
+
+      raise(ResponseError, series_4xx[http_response.code.to_i] || 'Unknown 4xx series code', caller)
     end
 
     # Internal: Handles HTTP Response from status range of 5xx.
