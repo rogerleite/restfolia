@@ -79,6 +79,12 @@ h2. Similar Projects
 * "Frenetic":https://github.com/dlindahl/frenetic
 * "Restfulie":https://github.com/caelum/restfulie
 
+h2. What is "folia"?
+
+p. Folia is a portuguese word and a simple translation in English can be:
+
+bc. sf merry-making, merriment, revelry. que folia! what a fun!
+
 h2. License
 
 p. Restfolia is copyright 2012 Roger Leite and contributors. It is licensed under the MIT license. See the include MIT-LICENSE file for details.
