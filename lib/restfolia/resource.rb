@@ -34,11 +34,25 @@ module Restfolia
   #   resource.links("relations").get  # => #<Restfolia::Resource ...>
   #
   #
-  # By default, "links" method, expects from JSON to be the following format:
+  # By default, "links" method, expects from JSON to be the following formats:
+  #
+  #   # Array de Links
+  #   "links" : [{ "href" : "http://fakeurl.com/some/service",
+  #               "rel" : "self",
+  #               "type" : "application/json"
+  #             }]
+  #
+  #   # OR 'single' Links
   #   "links" : { "href" : "http://fakeurl.com/some/service",
   #               "rel" : "self",
   #               "type" : "application/json"
   #             }
+  #
+  #   # OR node 'Link', that can be Array or single too
+  #   "link" : { "href" : "http://fakeurl.com/some/service",
+  #               "rel" : "self",
+  #               "type" : "application/json"
+  #            }
   #
   class Resource
 
@@ -95,7 +109,7 @@ module Restfolia
     # Returns Array of EntryPoints or Empty Array if :links not exist.
     # Raises RuntimeError if link doesn't have :href and :rel keys.
     def parse_links(json)
-      links = json[:links]
+      links = json[:links] || json[:link]
       return [] if links.nil?
 
       links = [links] unless links.is_a?(Array)

@@ -82,6 +82,12 @@ describe Restfolia::Resource do
       resource.links.size.must_equal(2)
     end
 
+    it "understand 'link' node too" do
+      resource = subject.new(:link => array_links)
+      resource.links.must_be_instance_of(Array)
+      resource.links[0].must_be_instance_of(Restfolia::EntryPoint)
+    end
+
     it "raises Error for invalid link" do
       resource = subject.new(:links => {:invalid => "invalid"})
       lambda { resource.links }.must_raise(RuntimeError)
