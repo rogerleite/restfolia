@@ -7,7 +7,7 @@ Gem::Specification.new do |s|
   s.version     = Restfolia::VERSION
   s.authors     = ["Roger Leite"]
   s.email       = ["roger.barreto@gmail.com"]
-  s.homepage    = ""
+  s.homepage    = "http://rogerleite.github.com/restfolia"
   s.summary     = %q{Simplest library ever for getting json from http requests}
   s.description = %q{Simplest library ever for getting json from http requests}
 
