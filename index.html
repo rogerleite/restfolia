@@ -1,0 +1,163 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>Restfolia by rogerleite</title>
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/pygment_trac.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script src="javascripts/respond.js"></script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!--[if lt IE 8]>
+    <link rel="stylesheet" href="stylesheets/ie.css">
+    <![endif]-->
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+
+  </head>
+  <body>
+
+      <div id="header">
+        <nav>
+          <li class="fork"><a href="https://github.com/rogerleite/restfolia">Fork On GitHub</a></li>
+          <li class="downloads"><a href="https://github.com/rogerleite/restfolia/zipball/master">ZIP</a></li>
+          <li class="downloads"><a href="https://github.com/rogerleite/restfolia/tarball/master">TAR</a></li>
+          <li class="title">DOWNLOADS</li>
+        </nav>
+      </div><!-- end header -->
+
+    <div class="wrapper">
+
+      <section>
+        <div id="title">
+          <h1>Restfolia</h1>
+          <p>REST client to consume and interact with Hypermedia APIs</p>
+          <hr>
+          <span class="credits left">Project maintained by <a href="https://github.com/rogerleite">rogerleite</a></span>
+          <span class="credits right">Hosted on GitHub Pages &mdash; Theme by <a href="http://twitter.com/#!/michigangraham">mattgraham</a></span>
+        </div>
+
+        <h1>Restfolia: a REST client to consume and interact with Hypermedia API.</h1>
+
+<h2>Description</h2>
+
+<p>Restfolia is a REST client and it's main goal is help you <strong>consume and interact</strong> with Hypermedia APIs.</p>
+
+<p>Against the grain, Restfolia is very opinionated about some REST's concepts:</p>
+
+<ul>
+<li>Aims only <strong>JSON Media Type</strong>.</li>
+<li>All responses are parsed and returned as Restfolia::Resource.</li>
+<li>Less is more. Restfolia is very proud to be small, easy to maintain and evolve. You can compare Restfolia's code with "Similar Projects" at page's bottom.</li>
+<li>Restfolia::Resource is Ruby object with attributes from JSON and can optionally contains <strong>hypermedia links</strong> which have to be a specific format. See the examples below.</li>
+<li>All code is very well documented, using <a href="http://tomdoc.org%20style">TomDoc</a>.</li>
+</ul><p>Obs: This is a draft version. Not ready for production (yet!).</p>
+
+<h2>References</h2>
+
+<p>You can find more information about arquitecture REST below:</p>
+
+<ul>
+<li>
+<a href="http://roy.gbiv.com/untangled">Roy Fielding's</a> see this post for example: <a href="http://roy.gbiv.com/untangled/2008/rest-apis-must-be-hypertext-driven">REST APIs must be hypertext-driven</a>.</li>
+<li>
+<a href="http://restinpractice.com">Rest in Practice</a>, especially the chapter titled "Hypermedia Formats".</li>
+<li><a href="http://amundsen.com/blog">Mike Amundsen's Blog</a></li>
+<li>ROAR - <a href="https://github.com/apotonick/roar">Resource Oriented Arquitectures in Ruby</a> it seems really good to build a hypermedia API, of course you can go with Sinatra+rabl solutions too.</li>
+</ul><h2>Examples of use</h2>
+
+<div class="highlight">
+<pre><span class="c1">// GET http://localhost:9292/recursos/busca</span>
+<span class="p">{</span> <span class="s2">"itens_por_pagina"</span> <span class="o">:</span> <span class="mi">10</span><span class="p">,</span>
+  <span class="s2">"paginal_atual"</span> <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s2">"paginas_totais"</span> <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s2">"query"</span> <span class="o">:</span> <span class="s2">""</span><span class="p">,</span>
+  <span class="s2">"total_resultado"</span> <span class="o">:</span> <span class="mi">100</span><span class="p">,</span>
+  <span class="s2">"resultado"</span> <span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"id"</span> <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+                    <span class="s2">"name"</span> <span class="o">:</span> <span class="s2">"Test1"</span><span class="p">,</span>
+                    <span class="s2">"links"</span> <span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"href"</span> <span class="o">:</span> <span class="s2">"http://localhost:9292/recursos/id/1"</span><span class="p">,</span>
+                          <span class="s2">"rel"</span> <span class="o">:</span> <span class="s2">"recurso"</span><span class="p">,</span>
+                          <span class="s2">"type"</span> <span class="o">:</span> <span class="s2">"application/json"</span>
+                    <span class="p">}</span> <span class="p">]</span>
+                  <span class="p">},</span>
+                  <span class="p">{</span> <span class="s2">"id"</span> <span class="o">:</span> <span class="mi">2</span><span class="p">,</span>
+                    <span class="s2">"name"</span> <span class="o">:</span> <span class="s2">"Test2"</span><span class="p">,</span>
+                    <span class="s2">"links"</span> <span class="o">:</span> <span class="p">[</span> <span class="p">{</span> <span class="s2">"href"</span> <span class="o">:</span> <span class="s2">"http://localhost:9292/recursos/id/2"</span><span class="p">,</span>
+                          <span class="s2">"rel"</span> <span class="o">:</span> <span class="s2">"recurso"</span><span class="p">,</span>
+                          <span class="s2">"type"</span> <span class="o">:</span> <span class="s2">"application/json"</span>
+                    <span class="p">}</span> <span class="p">]</span>
+                  <span class="p">}</span>
+                <span class="p">],</span>
+  <span class="s2">"links"</span> <span class="o">:</span> <span class="p">{</span> <span class="s2">"href"</span> <span class="o">:</span> <span class="s2">"http://localhost:9292/recursos/busca"</span><span class="p">,</span>
+      <span class="s2">"rel"</span> <span class="o">:</span> <span class="s2">"self"</span><span class="p">,</span>
+      <span class="s2">"type"</span> <span class="o">:</span> <span class="s2">"application/json"</span>
+    <span class="p">},</span>
+<span class="p">}</span>
+</pre>
+</div>
+
+
+<div class="highlight">
+<pre><span class="c1">// GET http://localhost:9292/recursos/id/1</span>
+<span class="p">{</span> <span class="s2">"id"</span>    <span class="o">:</span> <span class="mi">1</span><span class="p">,</span>
+  <span class="s2">"name"</span>  <span class="o">:</span> <span class="s2">"Test1"</span><span class="p">,</span>
+  <span class="s2">"links"</span> <span class="o">:</span> <span class="p">{</span> <span class="s2">"href"</span> <span class="o">:</span> <span class="s2">"http://localhost:9292/recursos/id/1"</span><span class="p">,</span>
+              <span class="s2">"rel"</span> <span class="o">:</span> <span class="s2">"self"</span><span class="p">,</span>
+              <span class="s2">"type"</span> <span class="o">:</span> <span class="s2">"application/json"</span>
+            <span class="p">}</span>
+<span class="p">}</span>
+</pre>
+</div>
+
+
+<div class="highlight">
+<pre><span class="c1"># getting a resource</span>
+<span class="n">resource</span> <span class="o">=</span> <span class="no">Restfolia</span><span class="o">.</span><span class="n">at</span><span class="p">(</span><span class="s1">'http://localhost:9292/recursos/busca'</span><span class="p">)</span><span class="o">.</span><span class="n">get</span>
+<span class="n">resource</span><span class="o">.</span><span class="n">pagina_atual</span>  <span class="c1"># =&gt; 1</span>
+<span class="n">resource</span><span class="o">.</span><span class="n">resultado</span>  <span class="c1"># =&gt; [#&lt;Resource ...&gt;, #&lt;Resource ...&gt;]</span>
+
+<span class="c1"># example of hypermedia navigation</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">resource</span><span class="o">.</span><span class="n">resultado</span><span class="o">.</span><span class="n">first</span>
+<span class="n">r1</span> <span class="o">=</span> <span class="n">r1</span><span class="o">.</span><span class="n">links</span><span class="p">(</span><span class="s2">"recurso"</span><span class="p">)</span><span class="o">.</span><span class="n">get</span>  <span class="c1"># =&gt; #&lt;Resource ...&gt;</span>
+<span class="n">r1</span><span class="o">.</span><span class="n">name</span>  <span class="c1"># =&gt; "Test1"</span>
+</pre>
+</div>
+
+
+<h2>Similar Projects</h2>
+
+<ul>
+<li><a href="https://github.com/apotonick/roar">ROAR</a></li>
+<li><a href="https://github.com/avdi/leadlight">Leadlight</a></li>
+<li><a href="https://github.com/dlindahl/frenetic">Frenetic</a></li>
+<li><a href="https://github.com/caelum/restfulie">Restfulie</a></li>
+</ul><h2>What is "folia"?</h2>
+
+<p>Folia is a portuguese word and a simple translation in English can be:</p>
+
+<blockquote>
+<p>sf merry-making, merriment, revelry. que folia! what a fun!</p>
+</blockquote>
+
+<h2>License</h2>
+
+<p>Restfolia is copyright 2012 Roger Leite and contributors. It is licensed under the MIT license. See the include MIT-LICENSE file for details.</p>
+      </section>
+
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><!--<![endif]-->
+              <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-31047367-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>
