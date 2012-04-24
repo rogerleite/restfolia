@@ -1,4 +1,9 @@
-# Restfolia: a REST client to consume and interact with Hypermedia API.
+# Restfolia [![Build Status][travis_status]][travis]
+
+[travis_status]: https://secure.travis-ci.org/rogerleite/restfolia.png
+[travis]: http://travis-ci.org/rogerleite/restfolia
+
+REST client to consume and interact with Hypermedia API, using JSON as Media Type.
 
 ## Description
 
