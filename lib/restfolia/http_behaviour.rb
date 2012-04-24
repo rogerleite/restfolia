@@ -66,7 +66,12 @@ module Restfolia
     # Returns nothing.
     # Raises Restfolia::ResponseError saying not supported.
     def on_3xx(http_response)
-      msg_error = "HTTP status 3xx not supported yet. :X"
+      if (location = http_response["location"])
+        http_resp = do_request(:get, location)
+        return response_by_status_code(http_resp)
+      end
+
+      msg_error = "HTTP status #{http_response.code} not supported"
       raise(ResponseError, msg_error, caller)
     end
 

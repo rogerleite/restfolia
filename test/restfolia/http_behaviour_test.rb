@@ -73,7 +73,20 @@ describe Restfolia::HTTPBehaviour do
 
   describe "#on_3xx" do
 
-    it "raise Error for 3xx status" do
+    it "follows Location Header" do
+      headers = {:location => Restfolia::Test::FAKE_LOCATION_URL}
+      stub_request(:get, Restfolia::Test::FAKE_LOCATION_URL).
+        to_return(:body => valid_json,
+                  :status => 200,
+                  :headers => {"Content-Type" => "application/json"})
+
+      stub_get_request(:status => 300, :body => "", :headers => headers)
+
+      resource = subject.get
+      resource.must_be_instance_of(Restfolia::Resource)
+    end
+
+    it "raise Error for 3xx without location header" do
       stub_get_request(:status => 300, :body => "")
       lambda { subject.get }.must_raise(Restfolia::ResponseError)
     end

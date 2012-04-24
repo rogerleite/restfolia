@@ -6,6 +6,5 @@ Resource & EntryPoint
 * facilitate cache (Cache Control, ETag, Last-Modified)
 
 HTTP Behaviours
-* follow redirects
 * improve 404 and 500 errors
 * create librarian-wrappers project

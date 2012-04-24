@@ -5,8 +5,9 @@ module Restfolia::Test
       status = args[:status]
       body = args[:body]
       query = args[:query]
+      headers = args[:headers] || {}
+      headers["Content-Type"] = "application/json"
 
-      headers = {"Content-Type" => "application/json"}
       stub = stub_request(:get, Restfolia::Test::FAKE_URL)
       stub.with(:query => query) unless query.nil?
       stub.to_return(:body => body,
