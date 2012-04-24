@@ -14,12 +14,12 @@ module Restfolia::Test
                      :headers => headers)
     end
 
-    def stub_post_request(args = {})
+    def stub_method_request(method, args = {})
       status = args[:status]
       body = args[:body]
       headers = args[:headers]
 
-      stub_request(:post, Restfolia::Test::FAKE_URL).
+      stub_request(method, Restfolia::Test::FAKE_URL).
         with(:body => body,
              :headers => {'Accept'=>'*/*'}).
              to_return(:status => status,

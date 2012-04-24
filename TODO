@@ -1,6 +1,4 @@
 EntryPoint
-* post!, put! and delete!
-* maybe remove bang from get, post, put and delete methods
 * allow cookies in request
 * allow headers in request
 

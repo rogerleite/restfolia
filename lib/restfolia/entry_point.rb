@@ -94,6 +94,52 @@ module Restfolia
       response_by_status_code(http_resp)
     end
 
+    # Public: Put data to EntryPoint's url.
+    #
+    # params - Hash object with data to be encoded as JSON and send as
+    # request body.
+    #
+    # Examples
+    #
+    #   # Expecting API respond with 201 and Location header
+    #   data = {:name => "Test"}
+    #   resource = Restfolia.at("http://service.com/resource/1").put(data)
+    #
+    # Returns depends on http code from response. For each "range"
+    # (ex. 2xx, 3xx ... etc) you can have a different return value.
+    # For 2xx range, you can expect an instance of Restfolia::Resource.
+    # You can see Restfolia::HttpBehaviour for more details.
+    #
+    # Raises Restfolia::ResponseError for unexpected conditions. See
+    # Restfolia::HTTPBehaviour methods for more details.
+    # Raises URI::InvalidURIError if url attribute is invalid.
+    def put(params)
+      body = MultiJson.dump(params)
+
+      http_resp = do_request(:put, self.url, :body => body)
+      response_by_status_code(http_resp)
+    end
+
+    # Public: Send Delete verb to EntryPoint's url.
+    #
+    # Examples
+    #
+    #   # Expecting API respond with 204 and empty body
+    #   resource = Restfolia.at("http://service.com/resource/1").delete
+    #
+    # Returns depends on http code from response. For each "range"
+    # (ex. 2xx, 3xx ... etc) you can have a different return value.
+    # For 2xx range, you can expect an instance of Restfolia::Resource.
+    # You can see Restfolia::HttpBehaviour for more details.
+    #
+    # Raises Restfolia::ResponseError for unexpected conditions. See
+    # Restfolia::HTTPBehaviour methods for more details.
+    # Raises URI::InvalidURIError if url attribute is invalid.
+    def delete
+      http_resp = do_request(:delete, self.url)
+      response_by_status_code(http_resp)
+    end
+
     # Returns url and rel for inspecting.
     def inspect
       "#<#{self.class} @url=\"#{@url}\" @rel=\"#{@rel}\">"

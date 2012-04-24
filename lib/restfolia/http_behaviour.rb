@@ -128,7 +128,7 @@ module Restfolia
 
     # Internal: Do a HTTP Request.
     #
-    # method - :get or :post. For different value, :get is used.
+    # method - HTTP verb to be used. Options: :get, :post, :put, :delete
     # url    - a String to request. (ex: http://fake.com/service)
     # args   - Hash options to build request (default: {}):
     #        :query - String to be set with url (optional).
@@ -145,11 +145,19 @@ module Restfolia
       uri.query = query if query
 
       http = Net::HTTP.new(uri.host, uri.port)
-      if method == :post
-        verb = Net::HTTP::Post.new(uri.request_uri)
-      else
-        verb = Net::HTTP::Get.new(uri.request_uri)
-      end
+      verb = case method
+             when :get
+               Net::HTTP::Get.new(uri.request_uri)
+             when :post
+               Net::HTTP::Post.new(uri.request_uri)
+             when :put
+               Net::HTTP::Put.new(uri.request_uri)
+             when :delete
+               Net::HTTP::Delete.new(uri.request_uri)
+             else
+               msg = "Method have to be one of: :get, post, :put, :delete"
+               raise ArgumentError, msg
+             end
       verb.body = body if body
 
       http_resp = http.request(verb)

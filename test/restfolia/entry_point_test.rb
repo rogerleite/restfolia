@@ -37,11 +37,40 @@ describe Restfolia::EntryPoint do
 
     it "can post Hash params" do
       headers = {"Content-Type" => "application/json"}
-      stub_post_request(:status => 201,
-                        :body => "{\"attr_test\":\"test\"}",
-                        :headers => headers)
+      stub_method_request(:post,
+                          :status => 201,
+                          :body => "{\"attr_test\":\"test\"}",
+                          :headers => headers)
 
       subject.post(:attr_test => "test")
+    end
+
+  end
+
+  describe "#put" do
+
+    it "can put Hash params" do
+      headers = {"Content-Type" => "application/json"}
+      stub_method_request(:put,
+                          :status => 200,
+                          :body => "{\"attr_test\":\"upd test\"}",
+                          :headers => headers)
+
+      subject.put(:attr_test => "upd test")
+    end
+
+  end
+
+  describe "#delete" do
+
+    it "can send DELETE request" do
+      headers = {"Content-Type" => "application/json"}
+      stub_method_request(:delete,
+                          :status => 204,
+                          :body => nil,
+                          :headers => headers)
+
+      subject.delete
     end
 
   end
