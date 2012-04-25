@@ -5,8 +5,8 @@ require "rubygems"
 require "multi_json"
 
 require "restfolia/version"
-require "restfolia/http_behaviour"
-require "restfolia/http_configuration"
+require "restfolia/http/behaviour"
+require "restfolia/http/configuration"
 require "restfolia/entry_point"
 require "restfolia/resource"
 

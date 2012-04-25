@@ -18,8 +18,8 @@ module Restfolia
   #   # => #<EntryPoint ...> to "contacts" from this resource
   class EntryPoint
 
-    include Restfolia::HTTPBehaviour
-    include Restfolia::HTTPConfiguration
+    include Restfolia::HTTP::Behaviour
+    include Restfolia::HTTP::Configuration
 
     # Public: Returns the String url of EntryPoint.
     attr_reader :url
@@ -58,7 +58,7 @@ module Restfolia
     # You can see Restfolia::HttpBehaviour for more details.
     #
     # Raises Restfolia::ResponseError for unexpected conditions. See
-    # Restfolia::HTTPBehaviour methods for more details.
+    # Restfolia::HTTP::Behaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def get(params = nil)
       query = if params && params.is_a?(String)
@@ -89,7 +89,7 @@ module Restfolia
     # You can see Restfolia::HttpBehaviour for more details.
     #
     # Raises Restfolia::ResponseError for unexpected conditions. See
-    # Restfolia::HTTPBehaviour methods for more details.
+    # Restfolia::HTTP::Behaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def post(params)
       body = MultiJson.dump(params)
@@ -116,7 +116,7 @@ module Restfolia
     # You can see Restfolia::HttpBehaviour for more details.
     #
     # Raises Restfolia::ResponseError for unexpected conditions. See
-    # Restfolia::HTTPBehaviour methods for more details.
+    # Restfolia::HTTP::Behaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def put(params)
       body = MultiJson.dump(params)
@@ -139,7 +139,7 @@ module Restfolia
     # You can see Restfolia::HttpBehaviour for more details.
     #
     # Raises Restfolia::ResponseError for unexpected conditions. See
-    # Restfolia::HTTPBehaviour methods for more details.
+    # Restfolia::HTTP::Behaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def delete
       http_resp = do_request(:delete, self.url, self.configuration)

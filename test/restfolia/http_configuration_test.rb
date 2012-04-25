@@ -1,8 +1,8 @@
 require "test_helper"
 
-describe Restfolia::HTTPConfiguration do
+describe Restfolia::HTTP::Configuration do
 
-  class TestConfiguration; include Restfolia::HTTPConfiguration; end
+  class TestConfiguration; include Restfolia::HTTP::Configuration; end
 
   before do
     @object = TestConfiguration.new

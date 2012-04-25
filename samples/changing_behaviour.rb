@@ -13,7 +13,7 @@ rescue Restfolia::ResponseError => ex
   puts ex.message
 end
 
-module Restfolia::HTTPBehaviour
+module Restfolia::HTTP::Behaviour
 
   # We can change behaviour of many HTTP status
   # on_2xx(http_response)

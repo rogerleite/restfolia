@@ -1,13 +1,13 @@
 require "test_helper"
 
-describe Restfolia::HTTPBehaviour do
+describe Restfolia::HTTP::Behaviour do
 
   include Restfolia::Test::JsonSamples
   include Restfolia::Test::StubHelpers
 
   before do
     @http_mock = MiniTest::Mock.new
-    Restfolia::HTTPBehaviour.extend(Restfolia::HTTPBehaviour)
+    Restfolia::HTTP::Behaviour.extend(Restfolia::HTTP::Behaviour)
   end
 
   subject { Restfolia::EntryPoint.new(Restfolia::Test::FAKE_URL) }
@@ -16,7 +16,7 @@ describe Restfolia::HTTPBehaviour do
     it "should raise Error for http code diferent from 2xx,3xx,4xx and 5xx" do
       @http_mock.expect(:code, "999")
       lambda do
-        Restfolia::HTTPBehaviour.response_by_status_code(@http_mock)
+        Restfolia::HTTP::Behaviour.response_by_status_code(@http_mock)
       end.must_raise(RuntimeError)
     end
   end
@@ -26,7 +26,7 @@ describe Restfolia::HTTPBehaviour do
     it "should validate Content-Type header" do
       @http_mock.expect(:[], "invalid/type", ["content-type"])
       lambda do
-        Restfolia::HTTPBehaviour.on_2xx(@http_mock)
+        Restfolia::HTTP::Behaviour.on_2xx(@http_mock)
       end.must_raise(Restfolia::ResponseError)
     end
 
@@ -34,7 +34,7 @@ describe Restfolia::HTTPBehaviour do
       @http_mock.expect(:[], "application/json", ["content-type"])
       @http_mock.expect(:body, '<html><body>error fake</body></html>')
       lambda do
-        Restfolia::HTTPBehaviour.on_2xx(@http_mock)
+        Restfolia::HTTP::Behaviour.on_2xx(@http_mock)
       end.must_raise(Restfolia::ResponseError)
     end
 
@@ -42,7 +42,7 @@ describe Restfolia::HTTPBehaviour do
       @http_mock.expect(:[], "application/json", ["content-type"])
       @http_mock.expect(:body, '{"attr_test": "test"}')
 
-      value = Restfolia::HTTPBehaviour.on_2xx(@http_mock)
+      value = Restfolia::HTTP::Behaviour.on_2xx(@http_mock)
       value.must_be_instance_of(Restfolia::Resource)
     end
 
@@ -50,7 +50,7 @@ describe Restfolia::HTTPBehaviour do
       @http_mock.expect(:[], "application/json; charset=utf-8", ["content-type"])
       @http_mock.expect(:body, '{"attr_test": "test"}')
 
-      value = Restfolia::HTTPBehaviour.on_2xx(@http_mock)
+      value = Restfolia::HTTP::Behaviour.on_2xx(@http_mock)
       value.must_be_instance_of(Restfolia::Resource)
     end
 
@@ -65,7 +65,7 @@ describe Restfolia::HTTPBehaviour do
                   :status => 200,
                   :headers => {"Content-Type" => "application/json"})
 
-      value = Restfolia::HTTPBehaviour.on_2xx(@http_mock)
+      value = Restfolia::HTTP::Behaviour.on_2xx(@http_mock)
       value.must_be_instance_of(Restfolia::Resource)
     end
 
