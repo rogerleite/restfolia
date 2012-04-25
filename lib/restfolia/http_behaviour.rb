@@ -136,8 +136,9 @@ module Restfolia
     # method - HTTP verb to be used. Options: :get, :post, :put, :delete
     # url    - a String to request. (ex: http://fake.com/service)
     # args   - Hash options to build request (default: {}):
-    #        :query - String to be set with url (optional).
-    #        :body  - String to be set with request (optional).
+    #        :query   - String to be set with url (optional).
+    #        :body    - String to be set with request (optional).
+    #        :headers - Hash with headers to be sent in request (optional).
     #
     # Returns an instance of Net::HTTPResponse.
     #
@@ -164,6 +165,11 @@ module Restfolia
                raise ArgumentError, msg
              end
       verb.body = body if body
+      if (headers = args[:headers])
+        headers.each do |header, value|
+          verb[header] = value
+        end
+      end
 
       http_resp = http.request(verb)
     end

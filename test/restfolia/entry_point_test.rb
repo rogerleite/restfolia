@@ -31,6 +31,16 @@ describe Restfolia::EntryPoint do
       subject.get(:q => "hashtest")
     end
 
+    it "should send Custom HTTP header" do
+      stub_api = stub_get_request(:status => 200,
+                                  :body => valid_json,
+                                  :query => {:q => "hashtest"},
+                                  :with_headers => {"X-Custom" => "test"})
+
+      subject.headers["X-Custom"] = "test"
+      subject.get(:q => "hashtest")
+    end
+
   end
 
   describe "#post" do
@@ -42,6 +52,18 @@ describe Restfolia::EntryPoint do
                           :body => "{\"attr_test\":\"test\"}",
                           :headers => headers)
 
+      subject.post(:attr_test => "test")
+    end
+
+    it "should send Custom HTTP header" do
+      headers = {"Content-Type" => "application/json"}
+      stub_method_request(:post,
+                          :status => 201,
+                          :body => "{\"attr_test\":\"test\"}",
+                          :headers => headers,
+                          :with_headers => {"X-Custom" => "test"})
+
+      subject.headers["X-Custom"] = "test"
       subject.post(:attr_test => "test")
     end
 
@@ -59,6 +81,17 @@ describe Restfolia::EntryPoint do
       subject.put(:attr_test => "upd test")
     end
 
+    it "should send Custom HTTP header" do
+      headers = {"Content-Type" => "application/json"}
+      stub_method_request(:put,
+                          :status => 200,
+                          :body => "{\"attr_test\":\"upd test\"}",
+                          :headers => headers,
+                          :with_headers => {"X-Custom" => "test"})
+
+      subject.headers["X-Custom"] = "test"
+      subject.put(:attr_test => "upd test")
+    end
   end
 
   describe "#delete" do
@@ -70,6 +103,18 @@ describe Restfolia::EntryPoint do
                           :body => nil,
                           :headers => headers)
 
+      subject.delete
+    end
+
+    it "should send Custom HTTP header" do
+      headers = {"Content-Type" => "application/json"}
+      stub_method_request(:delete,
+                          :status => 204,
+                          :body => nil,
+                          :headers => headers,
+                          :with_headers => {"X-Custom" => "test"})
+
+      subject.headers["X-Custom"] = "test"
       subject.delete
     end
 

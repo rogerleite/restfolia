@@ -1,5 +1,6 @@
 module Restfolia
 
+
   # Public: Responsible for request and validate a Resource.
   # Abstract details of how to deal with HTTP, like headers,
   # cookies, auth etc.
@@ -18,6 +19,7 @@ module Restfolia
   class EntryPoint
 
     include Restfolia::HTTPBehaviour
+    include Restfolia::HTTPConfiguration
 
     # Public: Returns the String url of EntryPoint.
     attr_reader :url
@@ -64,7 +66,9 @@ module Restfolia
               elsif params && params.is_a?(Hash)
                 params.map { |k, v| "#{k}=#{URI.encode(v)}" }.join
               end
-      http_resp = do_request(:get, self.url, :query => query)
+
+      args = self.configuration.merge(:query => query)
+      http_resp = do_request(:get, self.url, args)
       response_by_status_code(http_resp)
     end
 
@@ -90,7 +94,8 @@ module Restfolia
     def post(params)
       body = MultiJson.dump(params)
 
-      http_resp = do_request(:post, self.url, :body => body)
+      args = self.configuration.merge(:body => body)
+      http_resp = do_request(:post, self.url, args)
       response_by_status_code(http_resp)
     end
 
@@ -116,7 +121,8 @@ module Restfolia
     def put(params)
       body = MultiJson.dump(params)
 
-      http_resp = do_request(:put, self.url, :body => body)
+      args = self.configuration.merge(:body => body)
+      http_resp = do_request(:put, self.url, args)
       response_by_status_code(http_resp)
     end
 
@@ -136,7 +142,7 @@ module Restfolia
     # Restfolia::HTTPBehaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def delete
-      http_resp = do_request(:delete, self.url)
+      http_resp = do_request(:delete, self.url, self.configuration)
       response_by_status_code(http_resp)
     end
 
@@ -146,5 +152,6 @@ module Restfolia
     end
 
   end
+
 
 end

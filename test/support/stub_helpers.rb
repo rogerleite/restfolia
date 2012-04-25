@@ -7,9 +7,12 @@ module Restfolia::Test
       query = args[:query]
       headers = args[:headers] || {}
       headers["Content-Type"] = "application/json"
+      with_headers = args[:with_headers]
 
       stub = stub_request(:get, Restfolia::Test::FAKE_URL)
       stub.with(:query => query) unless query.nil?
+      stub.with(:headers => with_headers) unless with_headers.nil?
+
       stub.to_return(:body => body,
                      :status => status,
                      :headers => headers)
@@ -19,10 +22,11 @@ module Restfolia::Test
       status = args[:status]
       body = args[:body]
       headers = args[:headers]
+      with_headers = args[:with_headers] || {'Accept'=>'*/*'}
 
       stub_request(method, Restfolia::Test::FAKE_URL).
         with(:body => body,
-             :headers => {'Accept'=>'*/*'}).
+             :headers => with_headers).
              to_return(:status => status,
                        :body => "",
                        :headers => headers)

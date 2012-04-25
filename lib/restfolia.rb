@@ -6,6 +6,7 @@ require "multi_json"
 
 require "restfolia/version"
 require "restfolia/http_behaviour"
+require "restfolia/http_configuration"
 require "restfolia/entry_point"
 require "restfolia/resource"
 
