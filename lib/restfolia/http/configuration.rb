@@ -1,13 +1,34 @@
 module Restfolia
 
+  # Public: See description from this module at behaviour.rb
   module HTTP
 
     # Internal: Simply a bag of HTTP options like headers, cookies, auth ... etc.
     module Configuration
 
+      # Public: Sets/Returns cookies values as String.
+      attr_accessor :cookies
+
       # Public: Returns Hash to be used as Headers on request.
       def headers
         @headers ||= {}
+      end
+
+      # Public: A fluent way to add Cookies to Request.
+      #
+      # cookies - String in cookie format.
+      #
+      # Examples
+      #
+      #   # setting cookie from Google Translate
+      #   cookies = "PREF=ID=07eb...; expires=Sat, 26-Apr-2014 19:19:36 GMT; path=/; domain=.google.com, NID=59...; expires=Fri, 26-Oct-2012 19:19:36 GMT; path=/; domain=.google.com; HttpOnly"
+      #   resource = Restfolia.at("http://fake.com").
+      #                         set_cookies(cookies).get
+      #
+      # Returns self, always!
+      def set_cookies(cookies)
+        self.cookies = cookies
+        self
       end
 
       # Public: A fluent way to add HTTP headers.
@@ -45,11 +66,10 @@ module Restfolia
 
       protected
 
-      # Internal: A bag of HTTP configurations.
-      #
       # Returns Hash with headers, cookies, auth ... etc.
       def configuration
-        {:headers => headers}
+        {:headers => headers,
+         :cookies => cookies}
       end
 
     end

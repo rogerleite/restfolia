@@ -30,4 +30,16 @@ describe Restfolia::HTTP::Configuration do
     @object.headers.must_equal(expected_headers)
   end
 
+  it "#cookies" do
+    @object.must_respond_to(:cookies)
+  end
+
+  it "#set_cookies" do
+    expected_cookies = "key=value;"
+    return_value = @object.set_cookies(expected_cookies)
+
+    @object.must_be_same_as(return_value)
+    @object.cookies.must_equal(expected_cookies)
+  end
+
 end

@@ -177,6 +177,9 @@ module Restfolia
             verb[header] = value
           end
         end
+        if (cookies = args[:cookies])
+          verb["Cookie"] = cookies
+        end
 
         http_resp = http.request(verb)
       end

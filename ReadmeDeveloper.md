@@ -14,10 +14,6 @@ $ open doc/index.html
 
 ## TODO:
 
-EntryPoint
-
-* allow cookies in request
-
 Resource & EntryPoint
 
 * facilitate cache (Cache Control, ETag, Last-Modified)
