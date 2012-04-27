@@ -14,6 +14,10 @@ $ open doc/index.html
 
 ## TODO:
 
+Improvements:
+
+* Centralize in one Place, Resource creation
+
 Resource & EntryPoint
 
 * facilitate cache (Cache Control, ETag, Last-Modified)
