@@ -5,6 +5,7 @@ require "rubygems"
 require "multi_json"
 
 require "restfolia/version"
+require "restfolia/exceptions"
 require "restfolia/http/behaviour"
 require "restfolia/http/configuration"
 require "restfolia/entry_point"

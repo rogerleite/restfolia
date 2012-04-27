@@ -1,8 +1,5 @@
 module Restfolia
 
-  # Public: Exception to represent an invalid HTTP response.
-  class ResponseError < StandardError; end
-
   # Public: Anything related to HTTP protocol, should go below this module.
   #
   # Behaviour - module responsable to handle HTTP response.
