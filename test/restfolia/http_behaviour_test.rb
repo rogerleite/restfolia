@@ -101,7 +101,7 @@ describe Restfolia::HTTP::Behaviour do
       error = request.call rescue $!
 
       request.must_raise(Restfolia::ResponseError)
-      error.message.must_equal 'Unauthorized'
+      error.http_message.must_equal 'Unauthorized'
     end
 
     it "raise Error for 404 status" do
@@ -110,7 +110,7 @@ describe Restfolia::HTTP::Behaviour do
       error = request.call rescue $!
 
       request.must_raise(Restfolia::ResponseError)
-      error.message.must_equal 'Not Found'
+      error.http_message.must_equal 'Not Found'
     end
 
   end

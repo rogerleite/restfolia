@@ -42,19 +42,18 @@ module Restfolia::HTTP
     # http_response - Net::HTTPResponse instance.
     #
     # Returns Restfolia::Resource if HTTP Response body is not empty.
-    # Raises Restfolia::ResponseError if Content-Type header is not
-    # "aplication/json".
+    # Raises Restfolia::ResponseError for any inconsistency with Response.
     def on_2xx(http_response)
 
       content_type = (http_response["content-type"] =~ /application\/json/)
       if !content_type
         msg_error = "Response \"content-type\" header should be \"application/json\""
-        raise(Restfolia::ResponseError, msg_error, caller)
+        raise Restfolia::ResponseError.new(msg_error, caller, http_response)
       end
 
       http_body = http_response.body.to_s
       unless http_body.empty?
-        json_parsed = parse_body(http_response.body)
+        json_parsed = parse_body(http_response)
         return Restfolia::Resource.new(json_parsed)
       end
 
@@ -88,7 +87,7 @@ module Restfolia::HTTP
       end
 
       msg_error = "HTTP status #{http_response.code} not supported"
-      raise(Restfolia::ResponseError, msg_error, caller)
+      raise Restfolia::ResponseError.new(msg_error, caller, http_response)
     end
 
     # Internal: Handles HTTP Response from status range of 4xx.
@@ -118,26 +117,7 @@ module Restfolia::HTTP
     # Returns nothing.
     # Raises Restfolia::ResponseError Resource not found.
     def on_4xx(http_response)
-      series_4xx = { 400 => 'Bad Request',
-                     401 => 'Unauthorized',
-                     402 => 'Payment Required',
-                     403 => 'Forbidden',
-                     404 => 'Not Found',
-                     405 => 'Method Not Allowed',
-                     406 => 'Not Acceptable',
-                     407 => 'Proxy Authentication Required',
-                     408 => 'Request Timeout',
-                     409 => 'Conflict',
-                     410 => 'Gone',
-                     411 => 'Length Required',
-                     412 => 'Precondition Failed',
-                     413 => 'Request Entity Too Large',
-                     414 => 'Request-URI Too Long',
-                     415 => 'Unsupported Media Type',
-                     416 => 'Requested Range Not Satisfiable',
-                     417 => 'Expectation Failed'}
-
-      raise(Restfolia::ResponseError, series_4xx[http_response.code.to_i] || 'Unknown 4xx series code', caller)
+      raise Restfolia::ResponseError.new("Resource not found.", caller, http_response)
     end
 
     # Internal: Handles HTTP Response from status range of 5xx.
@@ -155,23 +135,24 @@ module Restfolia::HTTP
     # Returns nothing.
     # Raises Restfolia::ResponseError Internal Server Error.
     def on_5xx(http_response)
-      raise(Restfolia::ResponseError, "Internal Server Error.", caller)
+      raise Restfolia::ResponseError.new("Internal Server Error", caller, http_response)
     end
 
     protected
 
     # Internal: Parse response body, checking for errors.
     #
-    # body - String from response. Expected to be a JSON.
+    # http_response - HTTP Response with body. Expected to be a JSON.
     #
     # Returns Hash who represents JSON parsed.
     # Raises Restfolia::ResponseError if body seens invalid somehow.
-    def parse_body(body)
+    def parse_body(http_response)
+      body = http_response.body
       begin
         MultiJson.load(body, :symbolize_keys => true)
       rescue MultiJson::DecodeError => ex
         msg = "Body should be a valid json. #{ex.message}"
-        raise Restfolia::ResponseError, msg, caller
+        raise Restfolia::ResponseError.new(msg, caller, http_response)
       end
     end
 

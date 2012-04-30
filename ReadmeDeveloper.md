@@ -24,7 +24,6 @@ Resource & EntryPoint
 
 HTTP Behaviours
 
-* improve 404 and 500 errors
 * create librarian-wrappers project
 
 Future Ideas
