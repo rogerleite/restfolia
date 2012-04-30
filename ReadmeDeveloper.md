@@ -17,14 +17,13 @@ $ open doc/index.html
 Improvements:
 
 * Centralize in one Place, Resource creation
+* Add "events" before and after request. This could be
+cool to make projects that extends Restfolia features.
 
 Resource & EntryPoint
 
-* facilitate cache (Cache Control, ETag, Last-Modified)
-
-HTTP Behaviours
-
-* create librarian-wrappers project
+* facilitate cache (Cache Control, ETag, Last-Modified).
+This could be another project like restfolia-cazuza.
 
 Future Ideas
 
