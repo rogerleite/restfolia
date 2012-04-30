@@ -54,7 +54,7 @@ module Restfolia::HTTP
       http_body = http_response.body.to_s
       unless http_body.empty?
         json_parsed = parse_body(http_response)
-        return Restfolia::Resource.new(json_parsed)
+        return Restfolia.create_resource(json_parsed)
       end
 
       if (location = http_response["location"])

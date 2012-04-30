@@ -8,6 +8,7 @@ require "restfolia/version"
 require "restfolia/exceptions"
 require "restfolia/http"
 require "restfolia/entry_point"
+require "restfolia/resource_creator"
 require "restfolia/resource"
 
 # Public: Restfolia: a REST client to consume and interact with Hypermedia API.

@@ -16,7 +16,6 @@ $ open doc/index.html
 
 Improvements:
 
-* Centralize in one Place, Resource creation
 * Add "events" before and after request. This could be
 cool to make projects that extends Restfolia features.
 

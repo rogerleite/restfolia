@@ -1,8 +1,8 @@
 module Restfolia
 
   # Public: Resource is the representation of JSON response. It transforms
-  # all JSON attributes in attributes and all JSON objects in Resources.
-  # Resource provides a "links" method, to help with hypermedia navigation.
+  # all JSON attributes in attributes and provides a "links" method, to
+  # help with hypermedia navigation.
   #
   # Examples
   #
@@ -10,29 +10,12 @@ module Restfolia
   #   resource.attr_test  # => "test"
   #   resource.links  # => []
   #
-  #   resource = Resource.new(:attr_test => {:nested => "nested"},
+  #   resource = Resource.new(:attr_test => "test",
   #                           :links => {:href => "http://service.com",
   #                                      :rel => "self",
   #                                      :type => "application/json"})
-  #   resource.attr_test  # => #<Restfolia::Resource ...>
-  #   resource.links  # => [#<Restfolia::EntryPoint ...>]
-  #
-  #   resource = Resource.new(:attr_test => "test",
-  #                           :attr_tags => ["tag1", "tag2"],
-  #                           :attr_array_obj => [{:nested => "nested"}],
-  #                           :links => [{:href => "http://service.com",
-  #                                       :rel => "contacts",
-  #                                       :type => "application/json"},
-  #                                      {:href => "http://another.com",
-  #                                       :rel => "relations",
-  #                                       :type => "application/json"}
-  #                                     ])
   #   resource.attr_test  # => "test"
-  #   resource.attr_tags  # => ["tag1", "tag2"]
-  #   resource.attr_array_obj  # => [#<Restfolia::Resource ...>]
-  #   resource.links  # => [#<Restfolia::EntryPoint ...>, #<Librarian::EntryPoint ...>]
-  #   resource.links("relations").get  # => #<Restfolia::Resource ...>
-  #
+  #   resource.links  # => [#<Restfolia::EntryPoint ...>]
   #
   # By default, "links" method, expects from JSON to be the following formats:
   #
@@ -74,7 +57,6 @@ module Restfolia
       #http://blog.jayfields.com/2008/02/ruby-replace-methodmissing-with-dynamic.html
       @_json.each do |method, value|
         next if self.respond_to?(method)  #avoid method already defined
-        value = look_for_resource(value)
 
         (class << self; self; end).class_eval do
           define_method(method) do |*args|
@@ -120,25 +102,6 @@ module Restfolia
         end
         EntryPoint.new(link[:href], link[:rel])
       end
-    end
-
-    # Internal: Check if value is eligible to become a Restfolia::Resource.
-    # If value is Array object, looks inner contents, using rules below.
-    # If value is Hash object, it becomes a Restfolia::Resource.
-    # Else return itself.
-    #
-    # value - object to be checked.
-    #
-    # Returns value itself or Restfolia::Resource.
-    def look_for_resource(value)
-      if value.is_a?(Array)
-        value = value.inject([]) do |resources, array_obj|
-          resources << look_for_resource(array_obj)
-        end
-      elsif value.is_a?(Hash)
-        value = Resource.new(value)
-      end
-      value
     end
 
   end

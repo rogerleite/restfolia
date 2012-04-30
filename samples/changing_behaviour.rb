@@ -23,7 +23,7 @@ module Restfolia::HTTP::Behaviour
 
   # Here we change 3xx behaviour to return a Resource
   def on_3xx(http_response)
-    Restfolia::Resource.new(:redirected => "I'm free! :D")
+    Restfolia.create_resource(:redirected => "I'm free! :D")
   end
 
 end
