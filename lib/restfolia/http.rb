@@ -6,8 +6,11 @@ module Restfolia
   #  Configuration - module to incorporate attributes like headers, cookies
   # ... etc.
   module HTTP
-    autoload :Behaviour, "restfolia/http/behaviour"
+    autoload :Behaviour,     "restfolia/http/behaviour"
     autoload :Configuration, "restfolia/http/configuration"
+    autoload :Request,       "restfolia/http/request"
+
+    extend Behaviour
   end
 
 end

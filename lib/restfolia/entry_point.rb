@@ -18,7 +18,6 @@ module Restfolia
   #   # => #<EntryPoint ...> to "contacts" from this resource
   class EntryPoint
 
-    include Restfolia::HTTP::Behaviour
     include Restfolia::HTTP::Configuration
 
     # Public: Returns the String url of EntryPoint.
@@ -68,8 +67,8 @@ module Restfolia
               end
 
       args = self.configuration.merge(:query => query)
-      http_resp = do_request(:get, self.url, args)
-      response_by_status_code(http_resp)
+      http_resp = Restfolia::HTTP::Request.do_request(:get, self.url, args)
+      Restfolia::HTTP.response_by_status_code(http_resp)
     end
 
     # Public: Post data to EntryPoint's url.
@@ -95,8 +94,8 @@ module Restfolia
       body = MultiJson.dump(params)
 
       args = self.configuration.merge(:body => body)
-      http_resp = do_request(:post, self.url, args)
-      response_by_status_code(http_resp)
+      http_resp = Restfolia::HTTP::Request.do_request(:post, self.url, args)
+      Restfolia::HTTP.response_by_status_code(http_resp)
     end
 
     # Public: Put data to EntryPoint's url.
@@ -122,8 +121,8 @@ module Restfolia
       body = MultiJson.dump(params)
 
       args = self.configuration.merge(:body => body)
-      http_resp = do_request(:put, self.url, args)
-      response_by_status_code(http_resp)
+      http_resp = Restfolia::HTTP::Request.do_request(:put, self.url, args)
+      Restfolia::HTTP.response_by_status_code(http_resp)
     end
 
     # Public: Send Delete verb to EntryPoint's url.
@@ -142,8 +141,8 @@ module Restfolia
     # Restfolia::HTTP::Behaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def delete
-      http_resp = do_request(:delete, self.url, self.configuration)
-      response_by_status_code(http_resp)
+      http_resp = Restfolia::HTTP::Request.do_request(:delete, self.url, self.configuration)
+      Restfolia::HTTP.response_by_status_code(http_resp)
     end
 
     # Returns url and rel for inspecting.

@@ -58,7 +58,7 @@ module Restfolia::HTTP
       end
 
       if (location = http_response["location"])
-        http_resp = do_request(:get, location)
+        http_resp = Request.do_request(:get, location)
         return response_by_status_code(http_resp)
       end
       nil
@@ -82,7 +82,7 @@ module Restfolia::HTTP
     # Raises Restfolia::ResponseError saying not supported.
     def on_3xx(http_response)
       if (location = http_response["location"])
-        http_resp = do_request(:get, location)
+        http_resp = Request.do_request(:get, location)
         return response_by_status_code(http_resp)
       end
 
@@ -156,51 +156,6 @@ module Restfolia::HTTP
       end
     end
 
-    # Internal: Do a HTTP Request.
-    #
-    # method - HTTP verb to be used. Options: :get, :post, :put, :delete
-    # url    - a String to request. (ex: http://fake.com/service)
-    # args   - Hash options to build request (default: {}):
-    #        :query   - String to be set with url (optional).
-    #        :body    - String to be set with request (optional).
-    #        :headers - Hash with headers to be sent in request (optional).
-    #
-    # Returns an instance of Net::HTTPResponse.
-    #
-    # Raises URI::InvalidURIError if url attribute is invalid.
-    def do_request(method, url, args = {})
-      query = args[:query]
-      body = args[:body]
-
-      uri = URI.parse(url)
-      uri.query = query if query
-
-      http = Net::HTTP.new(uri.host, uri.port)
-      verb = case method
-             when :get
-               Net::HTTP::Get.new(uri.request_uri)
-             when :post
-               Net::HTTP::Post.new(uri.request_uri)
-             when :put
-               Net::HTTP::Put.new(uri.request_uri)
-             when :delete
-               Net::HTTP::Delete.new(uri.request_uri)
-             else
-               msg = "Method have to be one of: :get, post, :put, :delete"
-               raise ArgumentError, msg
-             end
-      verb.body = body if body
-      if (headers = args[:headers])
-        headers.each do |header, value|
-          verb[header] = value
-        end
-      end
-      if (cookies = args[:cookies])
-        verb["Cookie"] = cookies
-      end
-
-      http_resp = http.request(verb)
-    end
 
   end
 
