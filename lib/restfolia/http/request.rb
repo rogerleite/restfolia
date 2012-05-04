@@ -1,5 +1,6 @@
 module Restfolia::HTTP
 
+  # Public: Wraps Net::HTTP interface.
   class Request
 
     # Public: Do a HTTP Request.

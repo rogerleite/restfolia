@@ -3,159 +3,151 @@ module Restfolia::HTTP
   # Public: Separated methods to handle HTTP response by status code.
   module Behaviour
 
-    # Public: Based on first number of status code, call it's "helper"
-    # method. 2xx, 3xx, 4xx and 5xx are the status handled.
-    #
-    # http_response - Net::HTTPResponse instance.
-    #
-    # Returns Restfolia::Resource or raise Restfolia::ResponseError if
-    # any validation or problem.
-    # Raises RuntimeError if status code is diferent from 2xx, 3xx,
-    # 4xx or 5xx ranges.
-    def response_by_status_code(http_response)
-      case http_response.code.chars.first
-      when '2'
-        on_2xx(http_response)
-      when '3'
-        on_3xx(http_response)
-      when '4'
-        on_4xx(http_response)
-      when '5'
-        on_5xx(http_response)
-      else
-        msg = "I don't know what to do with this HTTP code '#{http_response.code}'"
-        raise(RuntimeError, msg, caller)
-      end
+    # Returns Restfolia::HTTP::Behaviour::Store instance.
+    def self.store
+      @store ||= Store.new
     end
 
-    # Internal: Handles HTTP Response from status range of 2xx.
-    # List of Successful 2xx:
-    #   200 OK
-    #   201 Created
-    #   202 Accepted
-    #   203 Non-Authoritative Information
-    #   204 No Content
-    #   205 Reset Content
-    #   206 Partial Content
-    # Source http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
+    # Internal: Helpers Available to behaviours blocks
     #
-    # http_response - Net::HTTPResponse instance.
+    # Examples
     #
-    # Returns Restfolia::Resource if HTTP Response body is not empty.
-    # Raises Restfolia::ResponseError for any inconsistency with Response.
-    def on_2xx(http_response)
+    #   Restfolia::HTTP.behaviours do
+    #     on(200) do |http_response|
+    #       # parse_json is a helper from
+    #       # Restfolia::HTTP::Behaviour::Helpers
+    #       parse_json(http_response.body)
+    #     end
+    #   end
+    module Helpers
 
-      content_type = (http_response["content-type"] =~ /application\/json/)
-      if !content_type
-        msg_error = "Response \"content-type\" header should be \"application/json\""
-        raise Restfolia::ResponseError.new(msg_error, caller, http_response)
+      # Internal: Parse response body, checking for errors.
+      #
+      # http_response - HTTP Response with body. Expected to be a JSON.
+      #
+      # Returns Hash who represents JSON parsed.
+      # Raises Restfolia::ResponseError if body seens invalid somehow.
+      def parse_json(http_response)
+        body = http_response.body
+        begin
+          MultiJson.load(body, :symbolize_keys => true)
+        rescue MultiJson::DecodeError => ex
+          msg = "Body should be a valid json. #{ex.message}"
+          raise Restfolia::ResponseError.new(msg, caller, http_response)
+        end
       end
 
-      http_body = http_response.body.to_s
-      unless http_body.empty?
-        json_parsed = parse_body(http_response)
-        return Restfolia.create_resource(json_parsed)
+    end
+
+    # Public: Responsible to store behaviours. See #behaviours for details.
+    class Store
+
+      include Restfolia::HTTP::Behaviour::Helpers
+
+      # Public: Creates a Store.
+      def initialize
+        self.clear
       end
 
-      if (location = http_response["location"])
-        http_resp = Request.do_request(:get, location)
-        return response_by_status_code(http_resp)
-      end
-      nil
-    end
-
-    # Internal: Handles HTTP Response from status range of 3xx.
-    # List of Redirection 3xx:
-    #   300 Multiple Choices
-    #   301 Moved Permanently
-    #   302 Found
-    #   303 See Other
-    #   304 Not Modified
-    #   305 Use Proxy
-    #   306 (Unused)
-    #   307 Temporary Redirect
-    # Source http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
-    #
-    # http_response - Net::HTTPResponse instance.
-    #
-    # Returns nothing.
-    # Raises Restfolia::ResponseError saying not supported.
-    def on_3xx(http_response)
-      if (location = http_response["location"])
-        http_resp = Request.do_request(:get, location)
-        return response_by_status_code(http_resp)
+      # Public: clear all defined behaviours.
+      # Returns nothing.
+      def clear
+        @behaviours = {}
+        @behaviours_range = {}
+        nil
       end
 
-      msg_error = "HTTP status #{http_response.code} not supported"
-      raise Restfolia::ResponseError.new(msg_error, caller, http_response)
-    end
+      # Public: It's a nice way to define configurations for
+      # your behaves using a block.
+      #
+      # block - Required block to customize your behaves. Below are
+      # the methods available inside block:
+      #         #on - See #on
+      #
+      # Examples
+      #
+      #   store = Restfolia::HTTP::Behaviour::Store.new
+      #   store.behaviours do
+      #     on(200) { '200 behaviour' }
+      #     on([201, 204]) { 'behaviour for 201 and 204 codes' }
+      #     on(300...400) { '3xx range' }
+      #   end
+      #
+      # Returns nothing.
+      def behaviours(&block)
+        self.instance_eval(&block)
+        nil
+      end
 
-    # Internal: Handles HTTP Response from status range of 4xx.
-    # List of Client Error 4xx:
-    #  400 Bad Request
-    #  401 Unauthorized
-    #  402 Payment Required
-    #  403 Forbidden
-    #  404 Not Found
-    #  405 Method Not Allowed
-    #  406 Not Acceptable
-    #  407 Proxy Authentication Required
-    #  408 Request Timeout
-    #  409 Conflict
-    #  410 Gone
-    #  411 Length Required
-    #  412 Precondition Failed
-    #  413 Request Entity Too Large
-    #  414 Request-URI Too Long
-    #  415 Unsupported Media Type
-    #  416 Requested Range Not Satisfiable
-    #  417 Expectation Failed
-    # Source http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
-    #
-    # http_response - Net::HTTPResponse instance.
-    #
-    # Returns nothing.
-    # Raises Restfolia::ResponseError Resource not found.
-    def on_4xx(http_response)
-      raise Restfolia::ResponseError.new("Resource not found.", caller, http_response)
-    end
+      # Public: Add behaviour on this store. See #behaviours for
+      # examples.
+      #
+      # code  - Integer or any object that respond to #include?
+      # block - Required block with behaviour for this code.
+      #
+      # Returns nothing.
+      def on(code, &block)
+        if code.is_a?(Integer)
+          @behaviours[code] = block
+        elsif code.respond_to?(:include?)
+          @behaviours_range[code] = block
+        end
+        nil
+      end
 
-    # Internal: Handles HTTP Response from status range of 5xx.
-    # List of Server Error 5xx
-    #   500 Internal Server Error
-    #   501 Not Implemented
-    #   502 Bad Gateway
-    #   503 Service Unavailable
-    #   504 Gateway Timeout
-    #   505 HTTP Version Not Supported
-    # Source http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html
-    #
-    # http_response - Net::HTTPResponse instance.
-    #
-    # Returns nothing.
-    # Raises Restfolia::ResponseError Internal Server Error.
-    def on_5xx(http_response)
-      raise Restfolia::ResponseError.new("Internal Server Error", caller, http_response)
-    end
-
-    protected
-
-    # Internal: Parse response body, checking for errors.
-    #
-    # http_response - HTTP Response with body. Expected to be a JSON.
-    #
-    # Returns Hash who represents JSON parsed.
-    # Raises Restfolia::ResponseError if body seens invalid somehow.
-    def parse_body(http_response)
-      body = http_response.body
-      begin
-        MultiJson.load(body, :symbolize_keys => true)
-      rescue MultiJson::DecodeError => ex
-        msg = "Body should be a valid json. #{ex.message}"
+      # Public: Method called by #execute in case of 'not found' http code.
+      #
+      # http_response - Net::HTTPResponse object.
+      #
+      # Examples
+      #
+      #   store = Restfolia::HTTP::Behaviour::Store.new
+      #   store.behaviours do
+      #     on(200) { '200 ok' }
+      #   end
+      #   http_resp = OpenStruct.new(:code => 201) #simulate response 201
+      #   store.execute(http_resp)
+      #   # => #<Restfolia::ResponseError "Undefined behaviour for 201" ...>
+      #
+      # Returns nothing.
+      # Raises Restfolia::ResponseError
+      def default_behaviour(http_response)
+        msg = "Undefined behaviour for #{http_response.code}"
         raise Restfolia::ResponseError.new(msg, caller, http_response)
       end
-    end
 
+      # Public: Look for defined behaviour, based on HTTP code.
+      # If behaviour not found, call #default_behaviour.
+      #
+      # http_response - Net::HTTPResponse.
+      # Returns Result from Proc behaviour or default_behaviour method.
+      def execute(http_response)
+        code = http_response.code.to_i
+        if (behaviour = find(code))
+          behaviour.call(http_response)
+        else
+          default_behaviour(http_response)
+        end
+      end
+
+      protected
+
+      # Internal: Search for defined behaviour.
+      #
+      # code - Integer or object that respond to #include?
+      #
+      # Returns nil or Proc
+      def find(code)
+        behaviour = @behaviours[code]
+        if behaviour.nil?
+          _, behaviour = @behaviours_range.detect do |range, proc|
+            range.include?(code)
+          end
+        end
+        behaviour
+      end
+
+    end
 
   end
 
