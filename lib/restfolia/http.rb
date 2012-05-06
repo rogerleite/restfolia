@@ -21,8 +21,7 @@ module Restfolia
   #         json_parsed = helpers.parse_json(http_response)
   #         Restfolia.create_resource(json_parsed)
   #       elsif (location = http_response["location"])
-  #         http_resp = Request.do_request(:get, location)
-  #         Restfolia::HTTP.response_by_status_code(http_resp)
+  #         helpers.follow_url(location)
   #       else
   #         nil
   #       end
@@ -31,8 +30,7 @@ module Restfolia
   #     # 3xx
   #     on(300...400) do |http_response|
   #       if (location = http_response["location"])
-  #         http_resp = Request.do_request(:get, location)
-  #         Restfolia::HTTP.response_by_status_code(http_resp)
+  #         helpers.follow_url(location)
   #       else
   #         msg_error = "HTTP status #{http_response.code} not supported"
   #         raise Restfolia::ResponseError.new(msg_error, caller, http_response)
@@ -103,8 +101,7 @@ module Restfolia
           json_parsed = helpers.parse_json(http_response)
           Restfolia.create_resource(json_parsed)
         elsif (location = http_response["location"])
-          http_resp = Request.do_request(:get, location)
-          Restfolia::HTTP.response_by_status_code(http_resp)
+          helpers.follow_url(location)
         else
           nil
         end
@@ -113,8 +110,7 @@ module Restfolia
       # 3xx
       on(300...400) do |http_response|
         if (location = http_response["location"])
-          http_resp = Request.do_request(:get, location)
-          Restfolia::HTTP.response_by_status_code(http_resp)
+          helpers.follow_url(location)
         else
           msg_error = "HTTP status #{http_response.code} not supported"
           raise Restfolia::ResponseError.new(msg_error, caller, http_response)

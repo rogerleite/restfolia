@@ -21,8 +21,7 @@ Restfolia::HTTP.behaviours do
       json_parsed = helpers.parse_json(http_response)
       Restfolia.create_resource(json_parsed)
     elsif (location = http_response["location"])
-      http_resp = do_request(:get, location)
-      response_by_status_code(http_resp)
+      helpers.follow_url(location)
     else
       nil
     end

@@ -35,6 +35,16 @@ module Restfolia::HTTP
         end
       end
 
+      # Public: Request url with GET and forwards to Restfolia::HTTP.
+      #
+      # url - String. Ex: http://service.com/resources
+      #
+      # Returns what Restfolia::HTTP.response_by_status_code returns.
+      def follow_url(url)
+        http_resp = Request.do_request(:get, url)
+        Restfolia::HTTP.response_by_status_code(http_resp)
+      end
+
     end
 
     # Public: Responsible to store behaviours. See #behaviours for details.
