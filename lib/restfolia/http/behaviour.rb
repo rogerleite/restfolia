@@ -14,12 +14,10 @@ module Restfolia::HTTP
     #
     #   Restfolia::HTTP.behaviours do
     #     on(200) do |http_response|
-    #       # parse_json is a helper from
-    #       # Restfolia::HTTP::Behaviour::Helpers
-    #       parse_json(http_response.body)
+    #       helpers.parse_json(http_response.body)
     #     end
     #   end
-    module Helpers
+    class Helpers
 
       # Internal: Parse response body, checking for errors.
       #
@@ -42,11 +40,13 @@ module Restfolia::HTTP
     # Public: Responsible to store behaviours. See #behaviours for details.
     class Store
 
-      include Restfolia::HTTP::Behaviour::Helpers
+      # Returns Restfolia::HTTP::Behaviour::Helpers instance.
+      attr_reader :helpers
 
       # Public: Creates a Store.
       def initialize
         self.clear
+        @helpers = Helpers.new
       end
 
       # Public: clear all defined behaviours.

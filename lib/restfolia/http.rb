@@ -1,7 +1,7 @@
 module Restfolia
 
   # Public: Store and execute behaviours defined by user. Behaviour is action
-  # for one or mode HTTP code. See "default behaviours" below.
+  # for one or more HTTP code. See "default behaviours" below.
   #
   # Examples
   #
@@ -18,7 +18,7 @@ module Restfolia
   #
   #       http_body = http_response.body.to_s
   #       if !http_body.empty?
-  #         json_parsed = parse_json(http_response)
+  #         json_parsed = helpers.parse_json(http_response)
   #         Restfolia.create_resource(json_parsed)
   #       elsif (location = http_response["location"])
   #         http_resp = Request.do_request(:get, location)
@@ -100,7 +100,7 @@ module Restfolia
 
         http_body = http_response.body.to_s
         if !http_body.empty?
-          json_parsed = parse_json(http_response)
+          json_parsed = helpers.parse_json(http_response)
           Restfolia.create_resource(json_parsed)
         elsif (location = http_response["location"])
           http_resp = Request.do_request(:get, location)

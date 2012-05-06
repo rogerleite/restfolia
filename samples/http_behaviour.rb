@@ -18,7 +18,7 @@ Restfolia::HTTP.behaviours do
 
     http_body = http_response.body.to_s
     if !http_body.empty?
-      json_parsed = parse_json(http_response)
+      json_parsed = helpers.parse_json(http_response)
       Restfolia.create_resource(json_parsed)
     elsif (location = http_response["location"])
       http_resp = do_request(:get, location)
