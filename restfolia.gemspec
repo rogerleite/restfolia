@@ -5,11 +5,12 @@ require "restfolia/version"
 Gem::Specification.new do |s|
   s.name        = "restfolia"
   s.version     = Restfolia::VERSION
-  s.authors     = ["Roger Leite"]
+  s.authors     = `git log --raw | grep Author: | awk -F ': | <|>' '{ print $2 }' | sort | uniq`.split("\n")
   s.email       = ["roger.barreto@gmail.com"]
   s.homepage    = "http://rogerleite.github.com/restfolia"
-  s.summary     = %q{Simplest library ever for getting json from http requests}
-  s.description = %q{Simplest library ever for getting json from http requests}
+  s.summary     = %q{REST client to consume and interact with Hypermedia API}
+  s.description = %q{REST client to consume and interact with Hypermedia API}
+  s.license     = 'MIT'
 
   s.rubyforge_project = "restfolia"
 
