@@ -22,7 +22,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "multi_json", "~> 1.3.0"
 
   s.add_development_dependency "rake"
-  s.add_development_dependency "minitest"
-  s.add_development_dependency "minitest-reporters"
-  s.add_development_dependency "webmock"
+  s.add_development_dependency "minitest", "~> 2"
+  s.add_development_dependency "minitest-reporters", "~> 0.6.0"
+  s.add_development_dependency "webmock", "~> 1"
 end
