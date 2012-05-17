@@ -5,7 +5,7 @@ require "restfolia/version"
 Gem::Specification.new do |s|
   s.name        = "restfolia"
   s.version     = Restfolia::VERSION
-  s.authors     = `git log --raw | grep Author: | awk -F ': | <|>' '{ print $2 }' | sort | uniq`.split("\n")
+  s.authors     = ["Roger Leite"]
   s.email       = ["roger.barreto@gmail.com"]
   s.homepage    = "http://rogerleite.github.com/restfolia"
   s.summary     = %q{REST client to consume and interact with Hypermedia API}
