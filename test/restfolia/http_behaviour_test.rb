@@ -35,8 +35,10 @@ describe Restfolia::HTTP::Behaviour do
       end
 
       it "should call #default_behaviour for non match code" do
-        @http_mock.expect(:code, "666")
-        lambda { subject.execute(@http_mock) }.
+        http_mock = Object.new
+        http_mock.instance_eval { def code; "666"; end }
+
+        lambda { subject.execute(http_mock) }.
           must_raise(Restfolia::ResponseError)
       end
     end
