@@ -1,5 +1,7 @@
+![Logo Restfolia][logo_readme]
 # Restfolia [![Build Status][travis_status]][travis]
 
+[logo_readme]: http://rogerleite.github.com/restfolia/images/logo_readme.png
 [travis_status]: https://secure.travis-ci.org/rogerleite/restfolia.png
 [travis]: http://travis-ci.org/rogerleite/restfolia
 
