@@ -1,16 +1,16 @@
 
 # Run this sample from root project:
-# $ ruby samples/using_custom_factory.rb
+# $ ruby -rubygems samples/using_custom_factory.rb
 
-require "rubygems"
 $LOAD_PATH << "lib"
 require "restfolia"
 require "ostruct"
 
+# Running https://github.com/rogerleite/simple_api
 SERVICE_URL = "http://localhost:9292/recursos/busca"
 
 resource = Restfolia.at(SERVICE_URL).get
-puts resource.inspect # => #<Restfolia::Resource ...>
+#puts resource.inspect # => #<Restfolia::Resource ...>
 
 # Here you have the "pure" json from response body.
 # You can do anything.

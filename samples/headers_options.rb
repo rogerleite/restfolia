@@ -1,11 +1,11 @@
 
 # Run this sample from root project:
-# $ ruby samples/headers_options.rb
+# $ ruby -rubygems samples/headers_options.rb
 
-require "rubygems"
 $LOAD_PATH << "lib"
 require "restfolia"
 
+# Running https://github.com/rogerleite/simple_api
 SERVICE_URL = "http://localhost:9292/recursos/busca"
 
 # accessing headers attribute

@@ -1,7 +1,6 @@
 require "net/http"
 require "uri"
 
-require "rubygems"
 require "multi_json"
 
 require "restfolia/version"

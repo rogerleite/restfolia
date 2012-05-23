@@ -1,13 +1,13 @@
 
 # Run this sample from root project:
-# $ ruby samples/http_behaviour.rb
+# $ ruby -rubygems samples/http_behaviour.rb
 
-require "rubygems"
 $LOAD_PATH << "lib"
 require "restfolia"
-require "ostruct"
 
 Restfolia::HTTP.behaviours do
+
+  clear  #clean all defined behaviours
 
   on(200) do |http_response|
     content_type = (http_response["content-type"] =~ /application\/json/)
@@ -36,17 +36,13 @@ Restfolia::HTTP.behaviours do
   #  custom_helper
   #end
 
-  #helpers do
-  #  def custom_helper
-  #    'lixo'
-  #  end
-  #end
-
 end
 
+# Running https://github.com/rogerleite/simple_api
 SERVICE_URL = "http://localhost:9292/recursos/busca"
+
 resource = Restfolia.at(SERVICE_URL).get
-puts resource.inspect
+puts resource.inspect  # => #<Restfolia::Resource ...>
 
 Restfolia.at("http://google.com").get
 # => "3xx error"

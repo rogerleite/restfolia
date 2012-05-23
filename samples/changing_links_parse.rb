@@ -1,8 +1,7 @@
 
 # Run this sample from root project:
-# $ ruby samples/changing_links_parse.rb
+# $ ruby -rubygems samples/changing_links_parse.rb
 
-require "rubygems"
 $LOAD_PATH << "lib"
 require "restfolia"
 
