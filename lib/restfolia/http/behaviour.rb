@@ -55,13 +55,13 @@ module Restfolia::HTTP
 
       # Public: Creates a Store.
       def initialize
-        self.clear
+        self.clear!
         @helpers = Helpers.new
       end
 
       # Public: clear all defined behaviours.
       # Returns nothing.
-      def clear
+      def clear!
         @behaviours = {}
         @behaviours_range = {}
         nil

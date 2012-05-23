@@ -7,7 +7,7 @@ require "restfolia"
 
 Restfolia::HTTP.behaviours do
 
-  clear  #clean all defined behaviours
+  clear!  #clear all defined behaviours
 
   on(200) do |http_response|
     content_type = (http_response["content-type"] =~ /application\/json/)
