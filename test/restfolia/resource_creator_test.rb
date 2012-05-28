@@ -28,6 +28,16 @@ describe Restfolia::ResourceCreator do
       resource.attr_test.nested.must_equal("nested")
     end
 
+    it "should not parse if attribute is on attributes_to_dont_parse" do
+      def subject.attributes_to_dont_parse
+        [:to_ignore]
+      end
+      resource = subject.create(:attr_test => {:nested => "nested"},
+                                :to_ignore => {:rel => "test"})
+      resource.must_be_instance_of(OpenStruct)
+      resource.to_ignore.must_be_instance_of(Hash)
+    end
+
     it "transforms nested hash from Arrays in Resource" do
       resource = subject.create(:attr_test => [{:nested_array => "object"}],
                                 :attr_test2 => ["not object"])
