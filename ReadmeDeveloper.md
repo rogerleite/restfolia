@@ -10,7 +10,6 @@ $ gem install redcarpet
 $ yard
 $ open doc/index.html
 ```
-**Obs:** ignore errors :X, until my [pull request](https://github.com/rubyworks/yard-tomdoc/pull/5) be accepted.
 
 ## TODO:
 
