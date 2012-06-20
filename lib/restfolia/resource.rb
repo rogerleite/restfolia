@@ -56,7 +56,7 @@ module Restfolia
       #Add json keys as methods of Resource
       #http://blog.jayfields.com/2008/02/ruby-replace-methodmissing-with-dynamic.html
       @_json.each do |method, value|
-        next if self.respond_to?(method)  #avoid method already defined
+        next if self.respond_to?(method) && (method != :id)
 
         (class << self; self; end).class_eval do
           define_method(method) do |*args|

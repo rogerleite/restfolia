@@ -21,6 +21,12 @@ describe Restfolia::Resource do
       resource.attr_test.must_equal("test")
     end
 
+    it "should support id attribute" do
+      resource = subject.new(:id => "123abc")
+
+      resource.id.must_equal("123abc")
+    end
+
   end
 
   describe "#links" do
