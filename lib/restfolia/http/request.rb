@@ -46,6 +46,7 @@ module Restfolia::HTTP
         verb["Cookie"] = cookies
       end
 
+      verb.basic_auth(uri.user, uri.password) if uri.user
       http.request(verb)
     end
 
