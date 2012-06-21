@@ -59,6 +59,30 @@ describe Restfolia::ResourceCreator do
       resource.attr_test[0][0].nested.must_equal("nested2")
     end
 
+    it "transforms multiple levels of hash" do
+      resource = subject.create(:slug => "4fb15a526f32412f37000012",
+                                :hash1 => {
+                                  :hash2 => {
+                                    :link => [
+                                      {:href => "http://exemplo.com",
+                                       :rel => "interno",
+                                       :type => "image/jpeg"
+                                      }
+                                    ],
+                                    :origem => "sistema",
+                                    :hash3 => {
+                                      :test => "test"
+                                    }
+                                  }
+                                })
+
+      resource.slug.must_equal("4fb15a526f32412f37000012")
+      resource.hash1.must_be_instance_of(OpenStruct)
+      resource.hash1.hash2.must_be_instance_of(OpenStruct)
+      resource.hash1.hash2.origem.must_equal("sistema")
+      resource.hash1.hash2.hash3.must_be_instance_of(OpenStruct)
+    end
+
   end
 
 end

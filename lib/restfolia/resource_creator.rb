@@ -108,6 +108,11 @@ module Restfolia
           resources << look_for_resource(attr_name, array_obj)
         end
       elsif value.is_a?(Hash)
+
+        value.each do |attr, v|
+          value[attr] = look_for_resource(attr, v)
+        end
+
         value = resource_class.new(value)
       end
       value
