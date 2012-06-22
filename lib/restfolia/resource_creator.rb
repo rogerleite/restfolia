@@ -38,23 +38,44 @@ module Restfolia
     # objects and transforming in Resources. To create Resource,
     # this method use #resource_class.new(json).
     #
-    # json - Hash parsed from Response body.
+    # json - Hash or Array parsed from Response body.
+    #
+    # Returns if json is Hash, returns Resource from #resource_class if
+    # json is Array, returns an Array of Resource from #resource_class.
+    # Raises ArgumentError if json is not a Hash or Array.
+    def create(json)
+      if json.is_a?(Array)
+        json.inject([]) do |result, json_hash|
+          result << create_resource(json_hash)
+        end
+      elsif json.is_a?(Hash)
+        create_resource(json)
+      else
+        raise(ArgumentError, "JSON parameter have to be a Hash or Array object", caller)
+      end
+    end
+
+    protected
+
+    # Internals: creates Resource looking recursively for JSON
+    # objects and transforming in Resources. To create Resource,
+    # this method use #resource_class.new(json).
+    #
+    # json_hash - Hash parsed from Response body.
     #
     # Returns Resource from #resource_class.
     # Raises ArgumentError if json is not a Hash.
-    def create(json)
-      unless json.is_a?(Hash)
+    def create_resource(json_hash)
+      unless json_hash.is_a?(Hash)
         raise(ArgumentError, "JSON parameter have to be a Hash object", caller)
       end
 
       json_parsed = {}
-      json.each do |attr, value|
+      json_hash.each do |attr, value|
         json_parsed[attr] = look_for_resource(attr, value)
       end
       resource_class.new(json_parsed)
     end
-
-    protected
 
     # Internal: By default, returns Restfolia::Resource. You can use
     # this method to override and returns a custom Resource.

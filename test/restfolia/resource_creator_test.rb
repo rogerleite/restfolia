@@ -83,6 +83,14 @@ describe Restfolia::ResourceCreator do
       resource.hash1.hash2.hash3.must_be_instance_of(OpenStruct)
     end
 
+    it "supports Array of hashes" do
+      resource = subject.create([{:slug => "slug1"}, {:slug => "slug2"}])
+
+      resource.must_be_instance_of(Array)
+      resource[0].slug.must_equal("slug1")
+      resource[1].slug.must_equal("slug2")
+    end
+
   end
 
 end
