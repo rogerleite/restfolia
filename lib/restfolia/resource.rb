@@ -91,7 +91,7 @@ module Restfolia
     # Returns Array of EntryPoints or Empty Array if :links not exist.
     # Raises RuntimeError if link doesn't have :href and :rel keys.
     def parse_links(json)
-      links = json[:links] || json[:link]
+      links = json[:links] || json[:link] || json['links'] || json['link']
       return [] if links.nil?
 
       links = [links] unless links.is_a?(Array)
