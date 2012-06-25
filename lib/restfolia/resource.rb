@@ -96,11 +96,11 @@ module Restfolia
 
       links = [links] unless links.is_a?(Array)
       links.map do |link|
-        if link[:href].nil? || link[:rel].nil?
+        if (link[:href].nil? && link['href'].nil?) || (link[:rel].nil? && link['rel'].nil?)
           msg = "Invalid hash link: #{link.inspect}"
           raise(RuntimeError, msg, caller)
         end
-        EntryPoint.new(link[:href], link[:rel])
+        EntryPoint.new(link[:href] || link['href'], link[:rel] || link['rel'])
       end
     end
 

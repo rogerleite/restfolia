@@ -100,6 +100,11 @@ describe Restfolia::Resource do
         resource.links("rel2").must_be_instance_of(Restfolia::EntryPoint)
       end
 
+      it "returns EntryPoint even when hash key is string" do
+        resource = subject.new('link' => {'rel' => 'rel2', 'href' => 'http://localhost/'})
+        resource.links("rel2").must_be_instance_of(Restfolia::EntryPoint)
+      end
+
     end
 
   end
