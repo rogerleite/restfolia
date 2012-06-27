@@ -91,7 +91,7 @@ module Restfolia
     # Restfolia::HTTP::Behaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def post(params)
-      body = MultiJson.dump(params)
+      body = MultiJson.encode(params)
 
       args = self.configuration.merge(:body => body)
       http_resp = Restfolia::HTTP::Request.do_request(:post, self.url, args)
@@ -118,7 +118,7 @@ module Restfolia
     # Restfolia::HTTP::Behaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def put(params)
-      body = MultiJson.dump(params)
+      body = MultiJson.encode(params)
 
       args = self.configuration.merge(:body => body)
       http_resp = Restfolia::HTTP::Request.do_request(:put, self.url, args)

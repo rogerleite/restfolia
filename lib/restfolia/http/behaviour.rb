@@ -28,7 +28,7 @@ module Restfolia::HTTP
       def parse_json(http_response)
         body = http_response.body
         begin
-          MultiJson.load(body, :symbolize_keys => true)
+          MultiJson.decode(body, :symbolize_keys => true)
         rescue MultiJson::DecodeError => ex
           msg = "Body should be a valid json. #{ex.message}"
           raise Restfolia::ResponseError.new(msg, caller, http_response)
