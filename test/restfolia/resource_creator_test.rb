@@ -22,6 +22,11 @@ describe Restfolia::ResourceCreator do
       resource.must_be_instance_of(OpenStruct)
     end
 
+    it "don't transforms nested link hash in Resource" do
+      resource = subject.create('link' => {:rel => "nested",:href => "http://localhost"})
+      resource.link.must_be_instance_of(Hash)
+    end
+
     it "transforms nested hash in Resource" do
       resource = subject.create(:attr_test => {:nested => "nested"})
       resource.attr_test.must_be_instance_of(OpenStruct)
