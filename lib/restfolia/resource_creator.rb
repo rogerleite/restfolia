@@ -108,7 +108,7 @@ module Restfolia
     #
     # Returns attributes to be ignored when creating Resource.
     def attributes_to_dont_parse
-      [:links, :link].freeze
+      [:links, :link, 'links', 'link'].freeze
     end
 
     # Internal: Check if value is eligible to become a Restfolia::Resource.

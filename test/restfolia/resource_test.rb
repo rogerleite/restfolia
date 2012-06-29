@@ -66,6 +66,18 @@ describe Restfolia::Resource do
       resource.links[0].must_be_instance_of(Restfolia::EntryPoint)
     end
 
+    it "understand 'links' as string hash key" do
+      resource = subject.new('links' => array_links)
+      resource.links.must_be_instance_of(Array)
+      resource.links[0].must_be_instance_of(Restfolia::EntryPoint)
+    end
+
+    it "understand 'link' as string hash key" do
+      resource = subject.new('link' => array_links)
+      resource.links.must_be_instance_of(Array)
+      resource.links[0].must_be_instance_of(Restfolia::EntryPoint)
+    end
+
     it "raises Error for invalid link" do
       resource = subject.new(:links => {:invalid => "invalid"})
       lambda { resource.links }.must_raise(RuntimeError)
@@ -85,6 +97,11 @@ describe Restfolia::Resource do
 
       it "returns EntryPoint for rel found" do
         resource = subject.new(:links => array_links)
+        resource.links("rel2").must_be_instance_of(Restfolia::EntryPoint)
+      end
+
+      it "returns EntryPoint even when hash key is string" do
+        resource = subject.new('link' => {'rel' => 'rel2', 'href' => 'http://localhost/'})
         resource.links("rel2").must_be_instance_of(Restfolia::EntryPoint)
       end
 
