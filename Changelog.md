@@ -1,5 +1,10 @@
 # Restfolia Changelog
 
+## 1.0.3 / 2012-07-04
+
+* \+ [Now support ~> 1.0 multi\_json versions](https://github.com/rogerleite/restfolia/commit/89dbcffbec8698c4e8e24225ab3d03a27b5d9bce)
+* ! [Resource support hash keys as String](https://github.com/rogerleite/restfolia/commit/390aad67e5d7e6a302c04ecf546f75bbf548cc70) (@felipecvo)
+
 ## 1.0.2 / 2012-06-22
 
 * \+ [Resource Creator supports Json - Array](https://github.com/rogerleite/restfolia/commit/363b00abf379a2849790ed4be86b9085bddbd2af)
