@@ -24,5 +24,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "rake"
   s.add_development_dependency "minitest", "~> 3"
   s.add_development_dependency "minitest-reporters", "~> 0.7.0"
-  s.add_development_dependency "webmock", "~> 1"
+
+  s.add_development_dependency "vcr", "~> 2.2.2"
+  s.add_development_dependency "webmock"
 end
