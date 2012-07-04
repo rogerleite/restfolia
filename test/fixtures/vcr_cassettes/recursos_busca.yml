@@ -1,0 +1,34 @@
+--- 
+recorded_with: VCR 2.2.2
+http_interactions: 
+- request: 
+    method: get
+    uri: http://localhost:9292/recursos/busca
+    body: 
+      string: ""
+    headers: 
+      Accept: 
+      - "*/*"
+  response: 
+    status: 
+      code: 200
+      message: "OK "
+    headers: 
+      X-Xss-Protection: 
+      - 1; mode=block
+      Content-Length: 
+      - "448"
+      Connection: 
+      - Keep-Alive
+      Content-Type: 
+      - application/json
+      Date: 
+      - Wed, 04 Jul 2012 18:54:04 GMT
+      X-Frame-Options: 
+      - sameorigin
+      Server: 
+      - WEBrick/1.3.1 (Ruby/1.8.7/2011-12-28)
+    body: 
+      string: "{\"paginal_atual\":1,\"links\":{\"type\":\"application/json\",\"rel\":\"self\",\"href\":\"http://localhost:9292/recursos/busca\"},\"query\":\"\",\"total_resultado\":100,\"resultado\":[{\"links\":[{\"type\":\"application/json\",\"rel\":\"recurso\",\"href\":\"http://localhost:9292/recursos/id/1\"}],\"name\":\"Test1\",\"id\":1},{\"links\":[{\"type\":\"application/json\",\"rel\":\"recurso\",\"href\":\"http://localhost:9292/recursos/id/2\"}],\"name\":\"Test2\",\"id\":2}],\"paginas_totais\":1,\"itens_por_pagina\":10}"
+    http_version: 
+  recorded_at: Wed, 04 Jul 2012 18:54:04 GMT

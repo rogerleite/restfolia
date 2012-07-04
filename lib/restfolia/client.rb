@@ -27,7 +27,7 @@ module Restfolia
     #
     # method - :get, :post, :put, :delete
     # url - address. Ex: http://fake.com/srv ou http://user@pass@fake.com/srv
-    # request_options - bag of options:
+    # request_options - bag of options (default: {}):
     #                   :query - String or Hash. Ex: "test=1" or {:test => "1"}
     #                   :body - Object that respond to body or String to be
     #                   encoded by default MediaType.
@@ -38,7 +38,7 @@ module Restfolia
     #
     # Raises Restfolia::ResponseError for any problem related by response.
     # Raises Restfolia::MediaTypes::DecodeError problem with decoding.
-    def http_request(method, url, request_options)
+    def http_request(method, url, request_options = {})
       request_options_query(request_options)
       request_options_body(request_options)
 
