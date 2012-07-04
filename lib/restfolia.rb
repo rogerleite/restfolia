@@ -3,6 +3,7 @@ require "restfolia/version"
 require "restfolia/builder"
 require "restfolia/client"
 require "restfolia/http_client"
+require "restfolia/entry_point"
 
 module Restfolia
 
