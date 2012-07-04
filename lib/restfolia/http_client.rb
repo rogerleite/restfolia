@@ -1,6 +1,3 @@
-require "net/http"
-require "uri"
-
 module Restfolia
 
   # Public: Wraps Net::HTTP interface.
@@ -14,6 +11,7 @@ module Restfolia
     #        :query   - String to be set with url (optional).
     #        :body    - String to be set with request (optional).
     #        :headers - Hash with headers to be sent in request (optional).
+    #        :cookies - String already "encoded" in cookie format.
     #
     # Returns an instance of Net::HTTPResponse.
     #
