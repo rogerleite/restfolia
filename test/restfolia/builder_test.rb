@@ -44,6 +44,11 @@ describe Restfolia::BehaviourCollection do
       subject.find(1).must_be_nil
     end
   end
+
+  it "#on_unknown" do
+    subject.on_unknown { "ok" }
+    subject.unknown_behaviour.call.must_equal("ok")
+  end
 end
 
 describe Restfolia::MediaTypeCollection do
@@ -52,9 +57,27 @@ describe Restfolia::MediaTypeCollection do
 
   it "#register" do
     obj = Object.new
-    puts subject.inspect
     subject.register "application/json", obj
 
     subject.find("application/json").must_be_same_as(obj)
+  end
+
+  describe "#default" do
+    it "first register is default" do
+      obj1 = Object.new
+      obj2 = Object.new
+      subject.register "application/app2", obj2
+      subject.register "application/app1", obj1
+
+      subject.default.must_equal(["application/app2", obj2])
+    end
+    it "can mark some register to be default" do
+      obj1 = Object.new
+      obj2 = Object.new
+      subject.register "application/app2", obj2
+      subject.register "application/app1", obj1, :default => true
+
+      subject.default.must_equal(["application/app1", obj1])
+    end
   end
 end

@@ -24,6 +24,8 @@ module Restfolia
 
   class BehaviourCollection
 
+    attr_reader :unknown_behaviour
+
     def initialize
       self.clear!
     end
@@ -31,6 +33,7 @@ module Restfolia
     def clear!
       @behaviours = {}
       @behaviours_range = {}
+      @unknown_behaviour = nil
       nil
     end
 
@@ -41,6 +44,10 @@ module Restfolia
         @behaviours_range[code] = block
       end
       nil
+    end
+
+    def on_unknown(&block)
+      @unknown_behaviour = block
     end
 
     def find(code)
@@ -62,16 +69,38 @@ module Restfolia
     end
 
     def clear!
+      @default = nil
       @medias = {}
       nil
     end
 
-    def register(content_type, media_class)
-      @medias[content_type] = media_class
+    # Public: Register which MediaType should be used to attend content type.
+    #
+    # content_type   - Mime type. Ex: "application/json"
+    # media_instance - An object that responds to encode/decode. Ex: Restfolia::MediaTypes::Json
+    # options        - Hash options (default: {}):
+    #                  :default - Boolean. Indicate a MediaType for default cases.
+    #
+    # Returns nothing.
+    def register(content_type, media_instance, options = {})
+      if @medias.empty? || options[:default]
+        @default = [content_type, media_instance]
+      end
+      @medias[content_type] = media_instance
     end
 
     def find(content_type)
       @medias[content_type]
+    end
+
+    # Returns ["content-type", media_instance] from default defined media type.
+    def default
+      @default
+    end
+
+    # Returns media_instance from default defined media type.
+    def default_media_type
+      @default[1] unless @default.nil?
     end
 
   end
