@@ -12,6 +12,10 @@ describe Restfolia::Builder do
     subject.behaviours.must_be_instance_of(Restfolia::BehaviourCollection)
   end
 
+  it "#http_client" do
+    subject.must_respond_to(:http_client)
+  end
+
 end
 
 describe Restfolia::BehaviourCollection do

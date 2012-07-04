@@ -2,9 +2,12 @@ module Restfolia
 
   class Builder
 
+    attr_reader :http_client
+
     def initialize
       @media_types = MediaTypeCollection.new
       @behaviours = BehaviourCollection.new
+      @http_client = Restfolia::HttpClient.new
     end
 
     def media_types(&block)
