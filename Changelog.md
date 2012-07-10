@@ -1,5 +1,9 @@
 # Restfolia Changelog
 
+## 1.0.4 / edge
+
+* \+ [Post/Put param has new options. Useful for multipart request.](https://github.com/rogerleite/restfolia/commit/06d6c4cb5d6a05ce89d9ab8f60f871d94cc18e0c)
+
 ## 1.0.3 / 2012-07-04
 
 * \+ [Now support ~> 1.0 multi\_json versions](https://github.com/rogerleite/restfolia/commit/89dbcffbec8698c4e8e24225ab3d03a27b5d9bce)
