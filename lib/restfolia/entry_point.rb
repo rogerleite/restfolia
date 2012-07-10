@@ -73,8 +73,10 @@ module Restfolia
 
     # Public: Post data to EntryPoint's url.
     #
-    # params - Hash object with data to be encoded as JSON and send as
-    # request body.
+    # params - You have some options.
+    #          String param is passed direct as body.
+    #          Object that responds to :body is passed direct as body.
+    #          Hash object with data to be encoded as JSON.
     #
     # Examples
     #
@@ -91,7 +93,7 @@ module Restfolia
     # Restfolia::HTTP::Behaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def post(params)
-      body = MultiJson.encode(params)
+      body = read_body(params)
 
       args = self.configuration.merge(:body => body)
       http_resp = Restfolia::HTTP::Request.do_request(:post, self.url, args)
@@ -100,8 +102,10 @@ module Restfolia
 
     # Public: Put data to EntryPoint's url.
     #
-    # params - Hash object with data to be encoded as JSON and send as
-    # request body.
+    # params - You have some options.
+    #          String param is passed direct as body.
+    #          Object that responds to :body is passed direct as body.
+    #          Hash object with data to be encoded as JSON.
     #
     # Examples
     #
@@ -118,7 +122,7 @@ module Restfolia
     # Restfolia::HTTP::Behaviour methods for more details.
     # Raises URI::InvalidURIError if url attribute is invalid.
     def put(params)
-      body = MultiJson.encode(params)
+      body = read_body(params)
 
       args = self.configuration.merge(:body => body)
       http_resp = Restfolia::HTTP::Request.do_request(:put, self.url, args)
@@ -148,6 +152,20 @@ module Restfolia
     # Returns url and rel for inspecting.
     def inspect
       "#<#{self.class} @url=\"#{@url}\" @rel=\"#{@rel}\">"
+    end
+
+    protected
+
+    def read_body(params)
+      if params && params.is_a?(String)
+        params
+      elsif params && params.respond_to?(:body)
+        params.body
+      elsif params && params.kind_of?(Hash)
+        MultiJson.encode(params)
+      else
+        raise RuntimeError, "Invalid params #{params.inspect} body."
+      end
     end
 
   end
