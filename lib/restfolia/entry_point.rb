@@ -63,7 +63,7 @@ module Restfolia
       query = if params && params.is_a?(String)
                 params
               elsif params && params.is_a?(Hash)
-                params.map { |k, v| "#{k}=#{URI.encode(v)}" }.join
+                params.map { |k, v| "#{k}=#{URI.encode(v)}" }.join('&')
               end
 
       args = self.configuration.merge(:query => query)
