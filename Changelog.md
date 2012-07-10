@@ -2,6 +2,7 @@
 
 ## 1.0.4 / edge
 
+* ! [Fix multiple params on Get request](https://github.com/rogerleite/restfolia/commit/3812678ed57bae400a74fb947ac242a0f3c6129a) (thanks @felipecvo)
 * \+ [Post/Put param has new options. Useful for multipart request.](https://github.com/rogerleite/restfolia/commit/06d6c4cb5d6a05ce89d9ab8f60f871d94cc18e0c)
 
 ## 1.0.3 / 2012-07-04
