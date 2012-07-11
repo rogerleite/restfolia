@@ -24,7 +24,7 @@ module Restfolia::MediaTypes
     def create_resource(client, http_response)
       body_parsed = self.decode(http_response.body.to_s)
       @creator.create(body_parsed) do |json_hash|
-        Restfolia::Resources::Json.new(json_hash)
+        Restfolia::Resources::Json.new(client, json_hash)
       end
     end
 

@@ -41,17 +41,21 @@ module Restfolia::Resources
 
     # Public: Returns the Hash that represents parsed JSON.
     attr_reader :_json
+    # Public: Restfolia::Client instance.
+    attr_reader :_client
 
     # Public: Initialize a Resource.
     #
+    # client - Restfolia::Client instance.
     # json - Hash that represents parsed JSON.
     #
     # Raises ArgumentError if json parameter is not a Hash object.
-    def initialize(json)
+    def initialize(client, json)
       unless json.is_a?(Hash)
         raise(ArgumentError, "json parameter have to be a Hash object", caller)
       end
       @_json = json
+      @_client = client
 
       #Add json keys as methods of Resource
       #http://blog.jayfields.com/2008/02/ruby-replace-methodmissing-with-dynamic.html
@@ -103,7 +107,7 @@ module Restfolia::Resources
           msg = "Invalid hash link: #{link.inspect}"
           raise(RuntimeError, msg, caller)
         end
-        Restfolia::EntryPoint.new(nil, link_href, link_rel)
+        Restfolia::EntryPoint.new(self._client, link_href, link_rel)
       end
     end
 
