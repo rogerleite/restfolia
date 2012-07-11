@@ -47,27 +47,29 @@ describe Restfolia::Resources::HashCrawler do
       resource.attr_test[0][0].nested.must_equal("nested2")
     end
     it "transforms multiple levels of hash" do
-      resource = subject.create({:slug => "4fb15a526f32412f37000012",
-                                :hash1 => {
-                                  :hash2 => {
-                                    :link => [
-                                      {:href => "http://exemplo.com",
-                                       :rel => "interno",
-                                       :type => "image/jpeg"
-                                    }
-                                    ],
-                                      :origem => "sistema",
-                                      :hash3 => {
-                                        :test => "test"
-                                      }
+      hash_multi_levels = {:slug => "4fb15a526f32412f37000012",
+                           :hash1 => {
+                             :hash2 => {
+                               :link => [
+                                 {:href => "http://exemplo.com",
+                                  :rel => "interno",
+                                  :type => "image/jpeg"
                                   }
-                                }}, &resource_creator)
+                                ],
+                                :origem => "sistema",
+                                :hash3 => {
+                                  :test => "test"
+                                }
+                             }
+                           }
+                          }
+      resource = subject.create(hash_multi_levels, &resource_creator)
 
-                                resource.slug.must_equal("4fb15a526f32412f37000012")
-                                resource.hash1.must_be_instance_of(OpenStruct)
-                                resource.hash1.hash2.must_be_instance_of(OpenStruct)
-                                resource.hash1.hash2.origem.must_equal("sistema")
-                                resource.hash1.hash2.hash3.must_be_instance_of(OpenStruct)
+      resource.slug.must_equal("4fb15a526f32412f37000012")
+      resource.hash1.must_be_instance_of(OpenStruct)
+      resource.hash1.hash2.must_be_instance_of(OpenStruct)
+      resource.hash1.hash2.origem.must_equal("sistema")
+      resource.hash1.hash2.hash3.must_be_instance_of(OpenStruct)
     end
     it "supports Array of hashes" do
       resource = subject.create([{:slug => "slug1"}, {:slug => "slug2"}], &resource_creator)
