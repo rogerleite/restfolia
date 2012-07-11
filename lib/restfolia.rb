@@ -8,6 +8,7 @@ require "restfolia/client"
 require "restfolia/http_client"
 require "restfolia/entry_point"
 require "restfolia/errors"
+require "restfolia/resources"
 
 module Restfolia
 
