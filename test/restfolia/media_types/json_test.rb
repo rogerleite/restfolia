@@ -18,4 +18,12 @@ describe Restfolia::MediaTypes::Json do
     end.must_raise(Restfolia::MediaTypes::DecodeError)
   end
 
+  it "#create_resource" do
+    stub_client = Object.new
+    stub_response = OpenStruct.new(:body => "{\"test\":\"value\"}")
+
+    resource = subject.create_resource(stub_client, stub_response)
+    resource.test.must_equal("value")
+  end
+
 end

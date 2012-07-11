@@ -41,7 +41,7 @@ module Restfolia
         on(200..300) do |http_response, media_type, client|
           http_body = http_response.body.to_s.strip
           if !http_body.empty?
-            body_parsed = media_type.decode(http_body)
+            media_type.create_resource(client, http_response)
           elsif (location = http_response["location"])
             client.http_request(:get, location, {})
           else

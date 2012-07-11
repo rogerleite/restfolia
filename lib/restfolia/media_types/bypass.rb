@@ -9,5 +9,9 @@ module Restfolia::MediaTypes
       value
     end
 
+    def create_resource(client, http_response)
+      http_response.body.to_s.strip
+    end
+
   end
 end
