@@ -22,12 +22,12 @@ module Restfolia
   end
 
   def self.default_client
-    @@default_client ||= create_default_client
+    @@default_client ||= build_default_client
   end
 
   protected
 
-  def self.create_default_client
+  def self.build_default_client
     build_client do
 
       media_types do
