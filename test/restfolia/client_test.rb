@@ -15,7 +15,7 @@ describe Restfolia::Client do
   describe "#http_request" do
 
     subject do
-      builder = Restfolia::Builder.new
+      builder = Restfolia::Builder::ClientBuilder.new
       builder.media_types.register("application/json", Restfolia::MediaTypes::Bypass.new)
       builder.behaviours.on_unknown do |http_response, media_type, client|
         "default flow ok"  #media_type.decode(http_response.body.to_s)

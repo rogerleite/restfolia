@@ -13,7 +13,7 @@ require "restfolia/resources"
 module Restfolia
 
   def self.build_client(&block)
-    builder = Restfolia::Builder.new
+    builder = Restfolia::Builder::ClientBuilder.new
     builder.instance_eval(&block)
     Restfolia::Client.new(builder)
   end
