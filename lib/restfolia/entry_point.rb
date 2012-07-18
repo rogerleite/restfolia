@@ -163,7 +163,7 @@ module Restfolia
 
     def media_type(headers)
       content_type = headers["Content-Type"]
-      @client.builder.media_types.find(content_type)
+      @client.find_media_type(content_type)
     end
   end
 

@@ -68,11 +68,7 @@ module Restfolia
 
       http_resp = @builder.http_client.request(method, url, request_options)
 
-      content_type = (http_resp["content-type"].split(";").first.strip)
-      unless (media_type = @builder.media_types.find(content_type))
-        msg = "Media Type not found for '#{content_type}'"
-        raise Restfolia::ResponseError.new(msg, caller, http_resp)
-      end
+      media_type = find_media_type(http_resp["content-type"])
 
       if (behaviour = @builder.behaviours.find(http_resp.code.to_i))
         behaviour.call(http_resp, media_type, self)
@@ -80,6 +76,15 @@ module Restfolia
         unknown_behaviour = @builder.behaviours.unknown_behaviour
         unknown_behaviour.call(http_resp, media_type, self) if unknown_behaviour.respond_to?(:call)
       end
+    end
+
+    def find_media_type(content_type)
+      content_type = content_type.split(";").first.strip
+      unless (media_type = @builder.media_types.find(content_type))
+        msg = "Media Type not found for '#{content_type}'"
+        raise Restfolia::ResponseError.new(msg, caller, http_resp)
+      end
+      media_type
     end
 
     protected
