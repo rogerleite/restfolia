@@ -1,5 +1,59 @@
 module Restfolia
 
+  # Internal: Help Restfolia::EntryPoint with HTTP dirty job.
+  module HttpHelper
+
+    # Public: Help to apply some rules to query parameter.
+    # * query is a String, use string value.
+    # * query is a Hash, iterate applying URI.encode in each value,
+    # and join with &
+    #
+    # query - Object
+    #
+    # Examples
+    #   query("var=1&var2=2")  # => "var=1&var2=2"
+    #   query(:var1 => 1, :var => 2)  # => "var=1&var2=2"
+    #
+    # Returns String in http query format.
+    def self.query_param(query)
+      if query && query.is_a?(String)
+        query
+      elsif query && query.is_a?(Hash)
+        query.map { |k, v| "#{k}=#{URI.encode(v.to_s)}" }.join('&')
+      end
+    end
+
+    # Public: Help to apply some rules to body parameter.
+    #
+    # media_type - instance of Media Type object.
+    # body - You have some options.
+    #        String param is passed direct as body.
+    #        Object that responds to :body is passed direct as body.
+    #        Hash with data to be encoded by media type parameter.
+    #
+    # Returns String.
+    # Raises ArgumentError for invalid body.
+    # Raises ArgumentError for media_type not informed.
+    def self.body_param(media_type, body)
+      if body && body.is_a?(String)
+        body
+      elsif body && body.respond_to?(:body)
+        body.body
+      elsif body && body.kind_of?(Hash)
+        if media_type.nil?
+          msg = "Check you Content-Type request header. Media Type not found."
+          raise ArgumentError, msg
+        end
+        media_type.encode(body)
+      else
+        msg = "Invalid body, see Restfolia::HttpHelper.body_param for details."
+        msg += "\nBody: #{body.inspect}."
+        raise ArgumentError, msg
+      end
+    end
+
+  end
+
   # Public: Wraps Net::HTTP interface.
   class HttpClient
 

@@ -93,7 +93,8 @@ module Restfolia
 
     # Public: Creates an EntryPoint.
     #
-    # client - Restfolia client, responsible to deal with http request.
+    # client - Instance of Restfolia::Client, responsible to deal with
+    # http request.
     # url    - A String address of some API service.
     # rel    - An optional String that represents the relation of EntryPoint.
     def initialize(client, url, rel = nil)
@@ -102,25 +103,68 @@ module Restfolia
       @rel = rel
     end
 
+    # Public: GET request, use response to select a media type based on
+    # Content-Type header and execute the defined behaviour for response code.
+    #
+    # query_param optional. See Restfolia::HttpHelper.query_param for
+    # examples and details.
+    #
+    # Returns the result of defined behaviour.
     def get(query_param = nil)
-      options = self.request_options.merge(:query => query_param)
+      options = self.client_options(:query => query_param)
       @client.http_request(:get, self.url, options)
     end
 
+    # Public: POST request, use response to select a media type based on
+    # Content-Type header and execute the defined behaviour for response code.
+    #
+    # body_param required. See Restfolia::HttpHelper.body_param for
+    # examples and details.
+    #
+    # Returns the result of defined behaviour.
     def post(body_param)
-      options = self.request_options.merge(:body => body_param)
+      options = self.client_options(:body => body_param)
       @client.http_request(:post, self.url, options)
     end
 
+    # Public: PUT request, use response to select a media type based on
+    # Content-Type header and execute the defined behaviour for response code.
+    #
+    # body_param required. See Restfolia::HttpHelper.body_param for
+    # examples and details.
+    #
+    # Returns the result of defined behaviour.
     def put(body_param)
-      options = self.request_options.merge(:body => body_param)
+      options = self.client_options(:body => body_param)
       @client.http_request(:put, self.url, options)
     end
 
+    # Public: DELETE request, use response to select a media type based on
+    # Content-Type header and execute the defined behaviour for response code.
+    #
+    # Returns the result of defined behaviour.
     def delete
-      @client.http_request(:delete, self.url, self.request_options)
+      @client.http_request(:delete, self.url, self.client_options)
     end
 
+    protected
+
+    def client_options(args = {})
+      options = self.request_options
+      if (query = args.delete(:query))
+        args[:query] = HttpHelper.query_param(query)
+      end
+      if args.key?(:body)
+        mt = self.media_type(options[:headers])
+        args[:body] = HttpHelper.body_param(mt, args[:body])
+      end
+      options.merge(args)
+    end
+
+    def media_type(headers)
+      content_type = headers["Content-Type"]
+      @client.builder.media_types.find(content_type)
+    end
   end
 
 end

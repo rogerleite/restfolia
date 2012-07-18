@@ -5,51 +5,50 @@ describe Restfolia::EntryPoint do
   FAKE_URL = "http://fake.com/service"
 
   before do
-    @mock_client = MiniTest::Mock.new
+    @mock_client = stub("client")
   end
 
   subject do
     Restfolia::EntryPoint.new(@mock_client, FAKE_URL)
   end
 
-  describe "#get" do
-    it "should accept blank query" do
-      mock_params = [:get, FAKE_URL, {:query => nil,
-                                      :headers => {},
-                                      :cookies => nil}]
-      @mock_client.expect(:http_request, "ok", mock_params)
-      subject.get.must_equal("ok")
-    end
-
-    it "should delegate query param as is" do
-      mock_params = [:get, FAKE_URL, {:query => "test=true",
-                                      :headers => {},
-                                      :cookies => nil}]
-      @mock_client.expect(:http_request, "ok", mock_params)
-      subject.get("test=true").must_equal("ok")
-    end
+  it "#get" do
+    subject.expects(:client_options).with(:query => "q=1").returns("mock")
+    @mock_client.expects(:http_request).with(:get, FAKE_URL, "mock")
+    subject.get("q=1")
   end
-
   it "#post" do
-    mock_params = [:post, FAKE_URL, {:body => "body",
-                                     :headers => {},
-                                     :cookies => nil}]
-    @mock_client.expect(:http_request, "ok", mock_params)
-    subject.post("body").must_equal("ok")
+    subject.expects(:client_options).with(:body => "b=1").returns("mock")
+    @mock_client.expects(:http_request).with(:post, FAKE_URL, "mock")
+    subject.post("b=1")
   end
-
   it "#put" do
-    mock_params = [:put, FAKE_URL, {:body => "body",
-                                    :headers => {},
-                                    :cookies => nil}]
-    @mock_client.expect(:http_request, "ok", mock_params)
-    subject.put("body").must_equal("ok")
+    subject.expects(:client_options).with(:body => "b=1").returns("mock")
+    @mock_client.expects(:http_request).with(:put, FAKE_URL, "mock")
+    subject.put("b=1")
   end
-
   it "#delete" do
-    mock_params = [:delete, FAKE_URL, {:headers => {}, :cookies => nil}]
-    @mock_client.expect(:http_request, "ok", mock_params)
-    subject.delete.must_equal("ok")
+    subject.expects(:client_options).returns("mock")
+    @mock_client.expects(:http_request).with(:delete, FAKE_URL, "mock")
+    subject.delete
+  end
+  describe "#client_options" do
+    it "query param" do
+      Restfolia::HttpHelper.expects(:query_param).with("q").returns("OK")
+      subject.stubs(:request_options).returns({})
+
+      result = subject.send(:client_options, {:query => "q"})
+      result[:query].must_equal "OK"
+    end
+    it "body param" do
+      media_type = stub("media_type")
+      subject.expects(:media_type).with({:h => "1"}).returns(media_type)
+      Restfolia::HttpHelper.expects(:body_param).with(media_type, "b").returns("OK")
+      subject.stubs(:request_options).returns({:headers => {:h => "1"}})
+
+      result = subject.send(:client_options, {:body => "b"})
+      result[:body].must_equal "OK"
+    end
   end
 
 end

@@ -2,7 +2,8 @@ require "restfolia"
 
 require "minitest/autorun"
 require "minitest/reporters"
-require 'vcr'
+require "vcr"
+require "mocha"
 
 VCR.configure do |c|
   c.cassette_library_dir = 'test/fixtures/vcr_cassettes'
