@@ -19,6 +19,30 @@ module Restfolia
       EntryPoint.new(self, url)
     end
 
+    # Public: Allow to configure client using DSL from builder.
+    #
+    # block - (optional) DSL builder. See example for details.
+    #
+    # Examples:
+    #
+    #   Restfolia.default_client.configure do
+    #     behaviours do
+    #       on([201]) do |http_response, media_type, client|
+    #         if (location = http_response["location"])
+    #           client.http_request(:get, location, {})
+    #         else
+    #           nil
+    #         end
+    #       end
+    #     end
+    #   end
+    #
+    # Returns Restfolia::Builder::ClientBuilder instance.
+    def configure(&block)
+      @builder.instance_eval(&block) if block_given?
+      @builder
+    end
+
     # Public: Client core. All requests pass in this flow:
     # * Check request query and body.
     # * Do HTTP request.

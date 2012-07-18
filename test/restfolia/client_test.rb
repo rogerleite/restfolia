@@ -3,13 +3,23 @@ require "test_helper"
 describe Restfolia::Client do
 
   before do
-    @mock_builder = MiniTest::Mock.new
+    @mock_builder = stub("builder")
   end
 
   subject { Restfolia::Client.new(@mock_builder) }
 
   it "#at" do
     subject.at("http://f.com/srv").must_be_instance_of(Restfolia::EntryPoint)
+  end
+
+  it "#configure without block" do
+    result = subject.configure
+    result.must_equal @mock_builder
+  end
+  it "#configure with block" do
+    block = lambda { self.must_be_kind_of Mocha::Mock }
+    result = subject.configure(&block)
+    result.must_equal @mock_builder
   end
 
   describe "#http_request" do
