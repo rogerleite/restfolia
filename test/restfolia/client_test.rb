@@ -17,8 +17,10 @@ describe Restfolia::Client do
     result.must_equal @mock_builder
   end
   it "#configure with block" do
-    block = lambda { self.must_be_kind_of Mocha::Mock }
-    result = subject.configure(&block)
+    @mock_builder.expects(:behaviours)
+    result = subject.configure do
+      behaviours
+    end
     result.must_equal @mock_builder
   end
 
