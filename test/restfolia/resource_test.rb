@@ -28,6 +28,34 @@ describe Restfolia::Resource do
     end
 
   end
+  
+  describe "#initialize - setter method" do
+
+    it "should support attribution" do
+      resource = subject.new(:id => "123abcd",:dummy_value => "test test")
+      resource.dummy_value = "test 321 321"
+      resource.dummy_value.must_equal("test 321 321")
+    end
+
+    it "should support attribution of hash key" do
+      resource = subject.new({:id => "123abcd", 
+        :dummy_value => "test 123 123", 
+        :dummy_hash => { :another_key => "lorem ipsum", :another_one_key => "dolor sit" }
+      })
+      resource.dummy_hash[:another_key] = "changing another_key value"
+      resource.dummy_hash[:another_key].must_equal("changing another_key value")
+    end
+
+    it "should support attribution of the entire hash" do
+      resource = subject.new({:id => "123abcd", 
+        :dummy_value => "test 123 123", 
+        :dummy_hash => { :another_key => "lorem ipsum", :another_one_key => "dolor sit" }
+      })
+      resource.dummy_hash = { :a_key => "a new key" }
+      resource.dummy_hash.must_equal({ :a_key => "a new key" })
+    end
+
+  end
 
   describe "#links" do
 
