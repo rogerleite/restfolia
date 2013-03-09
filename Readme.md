@@ -17,7 +17,7 @@ Against the grain, Restfolia is very opinionated about some REST's concepts:
 * All responses are parsed and returned as Restfolia::Resource.
 * Less is more. Restfolia is very proud to be small, easy to maintain and evolve. You can compare Restfolia's code with "Similar Projects" at page's bottom.
 * Restfolia::Resource is Ruby object with attributes from JSON and can optionally contains **hypermedia links** which have to be a specific format. See the examples below.
-* All code is very well documented, using [TomDoc](http://tomdoc.org style).
+* All code is very well documented, using [TomDoc](http://tomdoc.org) style.
 
 Obs: This is a draft version. Not ready for production (yet!).
 
