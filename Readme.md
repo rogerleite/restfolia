@@ -1,5 +1,6 @@
-![Logo Restfolia][logo_readme]
+![Logo Restfolia][logo_readme] [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/rogerleite/restfolia/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
 # Restfolia [![Build Status][travis_status]][travis]
+
 
 [logo_readme]: http://rogerleite.github.com/restfolia/images/logo_readme.png
 [travis_status]: https://secure.travis-ci.org/rogerleite/restfolia.png
