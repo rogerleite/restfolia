@@ -62,6 +62,9 @@ module Restfolia
           define_method(method) do |*args|
             value
           end
+          define_method("#{method}=") do |new_value, *args|
+            value = new_value
+          end
         end
       end
     end
